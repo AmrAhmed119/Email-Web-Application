@@ -5,10 +5,21 @@
     <div class="inbox-mode">
         <button class="btn"><i class='far fa-calendar-alt'></i> Newest</button>
         <button class="btn"><i class='fas fa-star-half-alt'></i> Priority</button>
-        <button style="margin-left: 45%;" class="previous round">&#8249;</button>
+        <button style="margin-left: 50%;" class="previous round">&#8249;</button>
         <button class="next round">&#8250;</button>
     </div>
-
     
+    <div class="emails-container">
+       <!-- <input type="checkbox" id= {{checkId}} checked="checked"> -->
+        <div class="email" *ngFor="let email of emails">
+            <input type="checkbox" id="checkId">
+            <button class="email-box">
+                <div class="email-name">{{email.name}}</div>
+                <div class="email-msg">{{email.message}}</div>
+                <div class="email-date">{{email.date}}</div>
+            </button>
+        </div>
+
+    </div>
 
 </div>

@@ -3,14 +3,11 @@
     margin-left: 10%;
     background-color: rgba(98, 103, 111, 0.204);
     box-shadow:
-    1px 0.7px 1.6px rgba(0, 0, 0, 0.003),
-    2.3px 1.6px 3.6px rgba(0, 0, 0, 0.007),
-    3.9px 2.8px 6.3px rgba(0, 0, 0, 0.013),
-    6.3px 4.5px 10px rgba(0, 0, 0, 0.022),
-    9.7px 7px 15.5px rgba(0, 0, 0, 0.034),
-    15.1px 10.9px 24.1px rgba(0, 0, 0, 0.051),
-    25px 18px 40px rgba(0, 0, 0, 0.077),
-    50px 36px 80px rgba(0, 0, 0, 0.12);
+    15px 17.2px 14.3px rgba(0, 0, 0, 0.031),
+    38px 43.4px 36.2px rgba(0, 0, 0, 0.055),
+    77.6px 88.6px 73.9px rgba(0, 0, 0, 0.076),
+    159.9px 182.5px 152.2px rgba(0, 0, 0, 0.1),
+    438px 500px 417px rgba(0, 0, 0, 0.19);
     border-radius: 12rem 12rem;
     height: 7%;
     width: 80%;
@@ -74,7 +71,58 @@
     background-color: rgba(92, 92, 90, 0.178);
 }
 
+.emails-container {
+    margin-top: 2%;
+    margin-left: 0.35%;
+    width: 99%;
+    height: 89%;
+}
 
+.email {
+    margin-top: 0.5%;
+    height: 6%;
+    display: flex;
+    flex-direction: row;
+}
+
+#checkId {
+    width: 1.7%;
+    cursor: pointer;
+}
+
+.email-box {
+    background-color: transparent;
+    margin-left: 2%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    border: 2px rgba(76, 73, 73, 0.142) solid;
+    cursor: pointer;
+}
+
+.email-name {
+    margin: 0;
+    text-align: left;
+    font-family: "Tahoma";
+    font-size: 17px;
+}
+
+.email-msg {
+    margin-top: 0.3%;
+    font-size: 14px;
+    margin-left: 5%;
+}
+
+.email-date {
+    margin-top: 0.3%;
+    font-size: 14px;
+    margin-left: 4.3%;
+}
+
+.email-box:hover {
+    border: 3px rgba(76, 73, 73, 0.333) solid;
+
+}
 
 
 
