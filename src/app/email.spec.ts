@@ -2,6 +2,6 @@ import { Email } from './email';
 
 describe('Email', () => {
   it('should create an instance', () => {
-    expect(new Email("","","","","")).toBeTruthy();
+    expect(new Email("","","","","",0)).toBeTruthy();
   });
 });
