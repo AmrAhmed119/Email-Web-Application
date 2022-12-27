@@ -1,3 +1,4 @@
+import { MailComponent } from './Components/Home/inbox/mail/mail.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CompositeComponent } from './Components/Home/composite/composite.component';
@@ -12,6 +13,7 @@ import { LoginComponent } from './Components/Login/login/login.component';
 const routes: Routes = [
   {path: "home", component:HomeComponent,children:[
     {path: "inbox", component:InboxComponent},
+    {path: "inbox/:id", component:MailComponent},
     {path: "sent", component:SentComponent},
     {path: "drafts", component:DraftsComponent},
     {path: "trash", component:TrashComponent},
