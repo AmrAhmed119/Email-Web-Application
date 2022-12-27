@@ -12,14 +12,14 @@
     <div class="emails-container">
        <!-- <input type="checkbox" id= {{checkId}} checked="checked"> -->
         <div class="email" *ngFor="let email of emails">
+            
             <input type="checkbox" id="{{email.id}}" (change)="increment($event)">
-            <button class="email-box">
+            <button class="email-box" routerLink="{{email.id}}">
                 <div class="email-name">{{email.name}}</div>
                 <div class="email-msg">{{email.message}}</div>
                 <div class="email-date">{{email.date}}</div>
             </button>
         </div>
-
     </div>
-
+    <router-outlet></router-outlet>
 </div>

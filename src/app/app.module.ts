@@ -1,3 +1,4 @@
+import { MailComponent } from './Components/Home/inbox/mail/mail.component';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -11,6 +12,7 @@ import { DraftsComponent } from './Components/Home/drafts/drafts.component';
 import { TrashComponent } from './Components/Home/trash/trash.component';
 import { FoldersComponent } from './Components/Home/folders/folders.component';
 import { CompositeComponent } from './Components/Home/composite/composite.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -23,10 +25,12 @@ import { CompositeComponent } from './Components/Home/composite/composite.compon
     TrashComponent,
     FoldersComponent,
     CompositeComponent,
+    MailComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]
