@@ -1,25 +1,29 @@
-<div class="operations"></div>
+<div class="operations">
+    <button (click)="delete()" title="Delete" class="operation-btn"><i class='far fa-trash-alt'></i></button>
+    <button (click)="selectAll()" title="Select all" class="operation-btn"><i class='fas fa-sort-amount-down'></i></button>
+    <button title="Delete" class="operation-btn"><i class='far fa-trash-alt'></i></button>
+</div>
 
-<div class="container">
+<div class="container" id="bg">
 
     <div class="inbox-mode">
-        <button class="btn"><i class='far fa-calendar-alt'></i> Newest</button>
-        <button class="btn"><i class='fas fa-star-half-alt'></i> Priority</button>
-        <button style="margin-left: 50%;" class="previous round">&#8249;</button>
-        <button class="next round">&#8250;</button>
+        <button (click)="newestEmails()" class="btn"><i class='far fa-calendar-alt'></i> Newest</button>
+        <button (click)="priorityEmails()" class="btn"><i class='fas fa-star-half-alt'></i> Priority</button>
+        <button style="margin-left: 50%;" class="round">&#8249;</button>
+        <button class="round">&#8250;</button>
     </div>
     
     <div class="emails-container">
-       <!-- <input type="checkbox" id= {{checkId}} checked="checked"> -->
         <div class="email" *ngFor="let email of emails">
-            <input type="checkbox" id="{{email.id}}" (change)="increment($event)">
-            <button class="email-box">
+            <input type="checkbox" id="{{email.id}}" (click)="toggleBg($event)" (click)="addEmail($event)">
+            <button class="email-box" name="{{email.id}}">
                 <div class="email-name">{{email.name}}</div>
                 <div class="email-msg">{{email.message}}</div>
                 <div class="email-date">{{email.date}}</div>
             </button>
         </div>
-
     </div>
 
 </div>
+
+<div *ngIf="load" class="loader"></div>
