@@ -239,3 +239,7 @@ footer a {
     color: #3c97bf;
     text-decoration: none;
 }
+.password.ng-touched.ng-invalid,.email.ng-touched.ng-invalid,.name.ng-touched.ng-invalid{
+	border: red 1px solid;
+	box-shadow: 0 0 31px rgba(255,0,0,0.7) !important;
+}
