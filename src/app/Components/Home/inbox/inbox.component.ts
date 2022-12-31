@@ -1,5 +1,5 @@
-import { MailserviceService } from './../../../services/mailservice.service';
 import { Component, OnInit } from '@angular/core';
+import { MailserviceService } from './../../../services/mailservice.service';
 import { Email } from 'app/email';
 
 @Component({
@@ -34,9 +34,7 @@ export class InboxComponent implements OnInit {
     receive -> list of folder names
     this.folderNames = response
     */
-
-  
-
+   
   }
 
   newest() {
@@ -129,6 +127,7 @@ export class InboxComponent implements OnInit {
           let checkbox = document.getElementById(id.toString()) as HTMLInputElement | null;
           if(checkbox != null) {
             checkbox.checked = true;
+            document.getElementsByName(id.toString())[0].style.background = "#ececed";
             this.selectedEmails.push(this.emails[i]);
           }
         }
@@ -143,6 +142,7 @@ export class InboxComponent implements OnInit {
           let checkbox = document.getElementById(id.toString()) as HTMLInputElement | null;
           if(checkbox != null) {
             checkbox.checked = false;
+            document.getElementsByName(id.toString())[0].style.background = "#ffffff";
           }
         }
       }      
@@ -204,4 +204,5 @@ export class InboxComponent implements OnInit {
 
 
   }
+  
 }

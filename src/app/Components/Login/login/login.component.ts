@@ -66,7 +66,7 @@ export class LoginComponent implements OnInit {
     */
 
     //F YES 
-    this.route.navigate(['/home']);
+    this.route.navigate(['/home/inbox']);
 
     //IF NO DO NOTHING 
     //alert("There is no account by such credintials");
@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit {
 
 
     console.log(this.signupform);
-    this.route.navigate(['/home']);
+    this.route.navigate(['/home/inbox']);
     // let name = (<HTMLInputElement> document.getElementById("name")).value;
     // let email = (<HTMLInputElement> document.getElementById("email")).value;
     // let pw = (<HTMLInputElement> document.getElementById("pw")).value;
