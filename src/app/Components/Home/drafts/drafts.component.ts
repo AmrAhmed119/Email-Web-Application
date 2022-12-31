@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MailserviceService } from 'app/services/mailservice.service';
 
 @Component({
   selector: 'app-drafts',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DraftsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private mailservice:MailserviceService) { }
 
   ngOnInit(): void {
   }

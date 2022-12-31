@@ -5,7 +5,12 @@ import { Email } from '../email';
   providedIn: 'root'
 })
 export class MailserviceService {
+
   emails : Email[] = [];
+  sent : Email[] = [];  
+  drafts : Email[] = [];  
+  trash : Email[] = [];  
+
   constructor() { 
     let msg : string = "Hello Mohamed, How are you now!, we are having alot of assignments and i can't handle it so help me if you can help me i need it please to ";
     this.emails.push(new Email("asd@gmail.com","Amr Ahmed","MohamedAnwar@gmail.com","25 Dec",msg,1))

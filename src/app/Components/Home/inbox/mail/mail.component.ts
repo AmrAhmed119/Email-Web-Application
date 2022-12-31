@@ -23,4 +23,24 @@ export class MailComponent implements OnInit {
     console.log(this.email);
     console.log(this.emails);
   }
+
+  prev() {
+
+    /*
+    SEND REQUEST HERE TO GET PREVIOUS MAIL
+    send -> email or email id
+    receive -> email
+    */
+
+  }
+
+  next() {
+
+    /*
+    SEND REQUEST HERE TO GET next MAIL
+    send -> email or email id
+    receive -> email
+    */
+   
+  }
 }
