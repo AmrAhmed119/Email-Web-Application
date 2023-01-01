@@ -9,38 +9,39 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./mail.component.css']
 })
 export class MailComponent implements OnInit {
-  email?:Email
-  emailid?:string|null
-  emails:Email[]=[]
+
+  email ? :Email
+  emailid? : string|null
+  emails : Email[] = []
 
   constructor(private activatedroute:ActivatedRoute,private mailservice:MailserviceService) { }
 
   ngOnInit(): void {
+
     this.emailid=this.activatedroute.snapshot.paramMap.get("id");
     this.email=this.mailservice.emails.find(x=> x.id==this.emailid);
-    this.emails=this.mailservice.emails
-    this.emails=this.emails.filter(x=> x.id!=this.emailid)
-    console.log(this.email);
-    console.log(this.emails);
+    this.emails=this.mailservice.emails;
+    // this.emails=this.emails.filter(x=> x.id!=this.emailid);
+
   }
 
   prev() {
 
-    /*
-    SEND REQUEST HERE TO GET PREVIOUS MAIL
-    send -> email or email id
-    receive -> email
-    */
+    let index = this.emails.indexOf(this.email!);
+
+    if(index - 1 >= 0) {
+      this.email = this.emails[index - 1];
+    }
 
   }
 
   next() {
 
-    /*
-    SEND REQUEST HERE TO GET next MAIL
-    send -> email or email id
-    receive -> email
-    */
+    let index = this.emails.indexOf(this.email!);
+
+    if(index + 1 < this.emails.length) {
+      this.email = this.emails[index + 1];
+    }
    
   }
 }

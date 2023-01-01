@@ -17,7 +17,11 @@ export class DraftsComponent implements OnInit {
   constructor(private mailservice:MailserviceService) { }
 
   ngOnInit(): void {
-    this.emails=this.mailservice.emails;
+
+    // TEMP
+    this.emails = this.mailservice.emails;
+    // TEMP
+
     this.selectedEmails = []
     this.diselect = false;
 
@@ -34,7 +38,9 @@ export class DraftsComponent implements OnInit {
     receive -> list of folder names
     this.folderNames = response
     */
-   
+
+    this.mailservice.emails = this.emails;
+
   }
 
   newest() {

@@ -15,8 +15,11 @@ const routes: Routes = [
     {path: "inbox", component:InboxComponent},
     {path: "inbox/:id", component:MailComponent},
     {path: "sent", component:SentComponent},
+    {path: "sent/:id", component:MailComponent},
     {path: "drafts", component:DraftsComponent},
+    {path: "drafts/:id", component:MailComponent},
     {path: "trash", component:TrashComponent},
+    {path: "trash/:id", component:MailComponent},
     {path: "folder", component:FoldersComponent},
     {path: "composite", component:CompositeComponent}
   ]},

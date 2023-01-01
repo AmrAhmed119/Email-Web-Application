@@ -18,7 +18,10 @@ export class SentComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.emails=this.mailservice.emails;
+    // TEMP
+    this.emails = this.mailservice.emails;
+    // TEMP
+    
     this.selectedEmails = []
     this.diselect = false;
 
@@ -36,6 +39,7 @@ export class SentComponent implements OnInit {
     this.folderNames = response
     */
 
+    this.mailservice.emails = this.emails;
   }
 
   newest() {
