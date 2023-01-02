@@ -165,3 +165,31 @@
         flex: 0 0 100%;
     }
 }
+input[type="file"] {
+    display: none;
+}
+.pri{
+    margin-left: 20px;
+}
+#pri{
+    margin-left: 10px;
+    border: none;
+}
+.custom-file-upload {
+    margin-top: 5px;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: #9faecb;
+    border-radius: 5px;
+}
+.file{
+    border-radius: 2px;
+    width: fit-content;
+    display: inline-block;
+    margin: 2px;
+}
+.id.ng-touched.ng-invalid{
+	border: red 1px solid;
+	box-shadow: 0 0 31px rgba(255,0,0,0.7) !important;
+}
