@@ -1,7 +1,0 @@
-import { Email } from './email';
-
-describe('Email', () => {
-  it('should create an instance', () => {
-    expect(new Email("","","","","",0,0)).toBeTruthy();
-  });
-});

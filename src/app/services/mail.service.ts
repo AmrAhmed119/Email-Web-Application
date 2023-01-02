@@ -4,11 +4,11 @@ import { Email } from '../email';
 @Injectable({
   providedIn: 'root'
 })
-export class MailserviceService {
+export class MailService {
 
   emails : Email[] = [];
- 
-  constructor() { 
+
+  constructor() {
     // let msg : string = "Hello Mohamed, How are you now!, we are having alot of assignments and i can't handle it so help me if you can help me i need it please to ";
     // this.emails.push(new Email("asd@gmail.com","Amr Ahmed","MohamedAnwar@gmail.com","25 Dec",msg,1,1))
     // this.emails.push(new Email("asd@gmail.com","Amr Ahmed","MohamedAnwar@gmail.com","25 Dec",msg,2,1))
@@ -23,4 +23,7 @@ export class MailserviceService {
     // this.emails.push(new Email("asd@gmail.com","Amr Ahmed","MohamedAnwar@gmail.com","25 Dec",msg,11,2))
     // this.emails.push(new Email("asd@gmail.com","Amr Ahmed","MohamedAnwar@gmail.com","25 Dec",msg,12,3))
   }
+
+
+
 }

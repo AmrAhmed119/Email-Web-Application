@@ -1,5 +1,5 @@
 import { Email } from './../../../../email';
-import { MailserviceService } from './../../../../services/mailservice.service';
+import { MailService } from '../../../../services/mail.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -14,12 +14,12 @@ export class MailComponent implements OnInit {
   emailid? : string|null
   emails : Email[] = []
 
-  constructor(private activatedroute:ActivatedRoute,private mailservice:MailserviceService) { }
+  constructor(private activatedroute:ActivatedRoute,private mailservice:MailService) { }
 
   ngOnInit(): void {
 
     this.emailid=this.activatedroute.snapshot.paramMap.get("id");
-    this.email=this.mailservice.emails.find(x=> x.id==this.emailid);
+    this.email=this.mailservice.emails.find(x=> x.mail_id==this.emailid);
     this.emails=this.mailservice.emails;
     // this.emails=this.emails.filter(x=> x.id!=this.emailid);
 
@@ -42,6 +42,6 @@ export class MailComponent implements OnInit {
     if(index + 1 < this.emails.length) {
       this.email = this.emails[index + 1];
     }
-   
+
   }
 }

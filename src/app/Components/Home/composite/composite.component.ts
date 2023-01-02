@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MailserviceService } from 'app/services/mailservice.service';
+import { MailService } from 'app/services/mail.service';
 
 @Component({
   selector: 'app-composite',
@@ -8,9 +8,9 @@ import { MailserviceService } from 'app/services/mailservice.service';
 })
 export class CompositeComponent implements OnInit {
 
-  
 
-  constructor(private mailservice : MailserviceService) { }
+
+  constructor(private mailservice : MailService) { }
 
   ngOnInit(): void {
   }

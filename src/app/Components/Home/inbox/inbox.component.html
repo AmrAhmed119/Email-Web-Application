@@ -14,11 +14,11 @@
     <select class="selection" id="by">
         <option>name</option>
         <option>sender</option>
-        <option>receiver</option>
-        <option>date</option>
-        <option>importance</option>
+        <option>reciever</option>
+        <option>sended_at</option>
+        <option>priority</option>
         <option>subject</option>
-        <option>body</option>
+        <option>message</option>
         <option>attachments</option>
     </select>
 
@@ -32,15 +32,15 @@
         <button (click)="pagPrev()" style="margin-left: 50%;" class="previous round">&#8249;</button>
         <button (click)="pagNext()" class="next round">&#8250;</button>
     </div>
-    
+
     <div class="emails-container">
 
-        <div class="email" *ngFor="let email of emails">            
-            <input (click)="addEmail($event)" (click)="toggleBg($event)" type="checkbox" id="{{email.id}}">
-            <button class="email-box" routerLink="{{email.id}}" name="{{email.id}}">
-                <div class="email-name">{{email.name}}</div>
+        <div class="email" *ngFor="let email of emails">
+            <input (click)="addEmail($event)" (click)="toggleBg($event)" type="checkbox" id="{{email.mail_id}}">
+            <button class="email-box" routerLink="{{email.mail_id}}" name="{{email.mail_id}}">
+                <div class="email-name">Amr Ahmed</div>
                 <div class="email-msg">{{email.message}}</div>
-                <div class="email-date">{{email.date}}</div>
+                <div class="email-date">{{email.sended_at}}</div>
             </button>
         </div>
 
