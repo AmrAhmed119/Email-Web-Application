@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import {TokenStorageService} from "../../../services/token-storage.service";
+import {EmailService} from "../../../services/email.service";
+import {ActivatedRoute} from "@angular/router";
+import {MailService} from "../../../services/mail.service";
+import {FileService} from "../../../services/file.service";
 
 @Component({
   selector: 'app-contacts',
@@ -6,62 +11,40 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./contacts.component.css']
 })
 export class ContactsComponent implements OnInit {
-  
+
   contacts = [
-    { 
-      id: "1",
-      name: "zeyad Ahmed",
-      lights: [
+    {
+      contact_id: "1",
+      emails: "zeyad Ahmed",
+      name: [
         "amr@gmai.com"
       ,
         "Help me in the project, pls i need help"
       ]
-    },
-    { 
-      id: "1",
-      name: "Amr Ahmed",
-      lights: [
-        "amr@gmai.com"
-      ,
-        "Help me in the project, pls i need help"
-      ]
-    },
-  {
-    id: "2",
-    name: "Hussien belal",
-    lights: [
-"Help me in the project, pls i need help"    
-,
-"Help me in the project, pls i need help"    ]
-  },
-  {
-    id: "3",
-    name: "Mohamed Ahmed",
-    lights: [
-"Help me in the project, pls i need help"    ,
-"Help me in the project, pls i need help",
-"hello there",
-"heloooooooooooooooooooooooooooooooooooo",   
-"heloooooooooooooooooooooooooooooooooooo"   ]
-  },
-  {
-    id: "4",
-    name: "Mohamed Ahmed",
-    lights: [
-"Help me in the project, pls i need help"    ,
-"Help me in the project, pls i need help"    ]
-  }
-  
-];
+    }]
+
 
   popAdd = false;
   popDel = false;
   popEdit = false;
 
-  constructor() { }
+  constructor(private activatedroute:ActivatedRoute,
+              private mailservice : MailService,
+              private fileservice:FileService,
+              private tokenStorageService : TokenStorageService,
+              private emailService : EmailService) { }
 
   ngOnInit(): void {
 
+    let user = this.tokenStorageService.getUser();
+    this.contacts = user['contacts'];
+
+    this.emailService.getAllContacts(user['user_id']).subscribe(data => {
+      console.log(data);
+    });
+
+
+    console.log(this.contacts);
     /*
     get contacts
     this.contacts = cookie
@@ -72,22 +55,35 @@ export class ContactsComponent implements OnInit {
   cancel() {
     this.popAdd=false;
     this.popDel=false;
-    this.popEdit=false;  
+    this.popEdit=false;
   }
   sort() {
 
     /*
-    SEND REQUEST 
+    SEND REQUEST
     this.contacts = respnse
     */
-    
-    const sorter2 = (sortBy : any) => (a : any, b : any) => a[sortBy].toLowerCase() > b[sortBy].toLowerCase() ? 1 : -1;
-    let arr = this.contacts.sort(sorter2('name'));
-    this.contacts = arr;
+    let user = this.tokenStorageService.getUser();
+
+    this.emailService.getAllContacts(user['user_id']).subscribe(data => {
+      let json = JSON.stringify(data);
+      let ob = JSON.parse(json);
+      this.contacts[0]['name'] = ob[0]['name'];
+      this.contacts[0]['emails'] = ob[0]['emails']
+      this.contacts[0]['contact_id'] = ob[0]['contact_id']
+
+      console.log(this.contacts)
+    });
+
+    // const sorter2 = (sortBy : any) => (a : any, b : any) => a[sortBy].toLowerCase() > b[sortBy].toLowerCase() ? 1 : -1;
+    // let arr = this.contacts.sort(sorter2('name'));
+    // this.contacts = arr;
 
   }
 
   search() {
+    let user = this.tokenStorageService.getUser();
+
     let element2 = document.getElementById('search') as HTMLInputElement;
     let searchText = element2.value;
     console.log(searchText)
@@ -98,17 +94,26 @@ export class ContactsComponent implements OnInit {
       this.contacts = response
       */
 
-      let arr = [];
-      for(let i=0;i<this.contacts.length;i++) {
-        if(this.contacts[i].name.includes(searchText)) {
-          arr.push(this.contacts[i]);
-        }
-      }
-      this.contacts = arr;
-      element2.value = ""
+
+      this.emailService.searchInContacts(user['user_id'],'name',searchText).subscribe(data => {
+        console.log(data)
+        let json = JSON.stringify(data);
+        let ob = JSON.parse(json);
+
+
+
+      })
+
 
     }
-    
+
+    // let arr = [];
+    // for(let i=0;i<this.contacts.length;i++) {
+    //   if(this.contacts[i].name.includes(searchText)) {
+    //     arr.push(this.contacts[i]);
+    //   }
+    // }
+    // this.contacts = arr;
   }
 
   deleteContact() {
@@ -156,15 +161,15 @@ export class ContactsComponent implements OnInit {
       REQUEST HERE
       this.contacts = response
       */
-      this.contacts.push({
-        "id" : "1",
-        "name" : contactName,
-        "lights" : [contactEmail]
-      })
+      // this.contacts.push({
+      //   "id" : "1",
+      //   "name" : contactName,
+      //   "lights" : [contactEmail]
+      // })
     }
 
     this.popAdd = false;
-    
+
   }
 
   editContact() {
@@ -194,21 +199,21 @@ export class ContactsComponent implements OnInit {
       /*
       RQUEST HERE
       */
-      this.contacts[contactNumber].name = contactRename;
+      // this.contacts[contactNumber].name = contactRename;
     }
 
     if(contactAddEmail != "") {
       /*
       REQUEST HERE
       */
-      this.contacts[contactNumber].lights.push(contactAddEmail);
+      // this.contacts[contactNumber].emails.push(contactAddEmail);
     }
 
-    if(emailNumber >=0 && emailNumber<this.contacts[contactNumber].lights.length) {
+    if(emailNumber >=0 && emailNumber<this.contacts[contactNumber].emails.length) {
       /**
        * REQUEST HERE
        */
-      this.contacts[contactNumber].lights.splice(emailNumber,1)
+      // this.contacts[contactNumber].lights.splice(emailNumber,1)
     }
 
     this.popEdit = false;

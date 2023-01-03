@@ -1,7 +1,7 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container">
 
-    
+
     <div class="operations">
 
         <button (click)="addContact()" title="Add contact" class="operation-btn"><i class='fas fa-user-plus'></i></button>
@@ -10,24 +10,24 @@
         <button (click)="deleteContact()" title="Delete" class="operation-btn"><i class='far fa-trash-alt'></i></button>
         <input type="text" class="operation-search" placeholder="Search.." id="search">
         <button (click)="search()" class="search-button" title="Search"><i class="fa fa-search"></i></button>
-    
+
     </div>
 
 
-    <div class="member-entry" *ngFor="let contact of contacts"> 
-        <a class="member-img"> 
-            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded"> 
-            <i class="fa fa-forward"></i> 
-        </a> 
-        <div class="member-details"> 
-            <h4 style="margin-left: 2%;"> {{contact.name}} </h4> 
-            <div class="row info-list"> 
-                <div class="col-sm-4" *ngFor="let email of contact.lights" style="margin-left: 2%;"> 
-                    <i class="fa fa-envelope"></i> 
+    <div class="member-entry" *ngFor="let contact of contacts">
+        <a class="member-img">
+            <img src="https://bootdey.com/img/Content/avatar/avatar1.png" class="img-rounded">
+            <i class="fa fa-forward"></i>
+        </a>
+        <div class="member-details">
+            <h4 style="margin-left: 2%;"> {{contact.name}} </h4>
+            <div class="row info-list">
+                <div class="col-sm-4" *ngFor="let email of contact.emails" style="margin-left: 2%;">
+                    <i class="fa fa-envelope"></i>
                     {{email}}
-                </div> 
-            </div> 
-        </div> 
+                </div>
+            </div>
+        </div>
     </div>
 
     <div *ngIf="popAdd" class="popScreen">
@@ -121,7 +121,7 @@
         </table>
     </main>
 
-    
+
 
      <div class="contacts-container">
         <ul>

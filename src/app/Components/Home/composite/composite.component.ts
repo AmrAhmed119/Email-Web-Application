@@ -5,6 +5,8 @@ import { MailService } from 'app/services/mail.service';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Email } from 'app/email';
+import {TokenStorageService} from "../../../services/token-storage.service";
+import {EmailService} from "../../../services/email.service";
 
 @Component({
   selector: 'app-composite',
@@ -23,10 +25,14 @@ export class CompositeComponent implements OnInit {
   emails : Email[] = []
 
 
-  constructor(private activatedroute:ActivatedRoute,private mailservice : MailService,private fileservice:FileService) { }
+  constructor(private activatedroute:ActivatedRoute,
+              private mailservice : MailService,
+              private fileservice:FileService,
+              private tokenStorageService : TokenStorageService,
+              private emailService : EmailService) { }
 
 
-  
+
   ngOnInit(): void {
       this.emailid=this.activatedroute.snapshot.paramMap.get("id");
       this.email=this.mailservice.emails.find(x=> x.mail_id==this.emailid);
@@ -73,8 +79,31 @@ export class CompositeComponent implements OnInit {
     }
     this.files=[]
   }
+
   send(){
-    console.log(this.composeform)
+
+    let x = document.getElementById('to') as HTMLInputElement;
+    let y = document.getElementById('subject') as HTMLInputElement;
+    let a = document.querySelector('#pri') as HTMLInputElement;
+    let z = document.getElementById('message') as HTMLInputElement;
+
+    let to = this.composeform.value.to;
+    let subject = this.composeform.value.subject;
+    let priority = this.composeform.value.priority;
+    let message = this.composeform.value.reply;
+
+    let user = this.tokenStorageService.getUser();
+    let sender = user['email'];
+    let email = new Email(null,subject,message,priority,null,{
+      "sender" : sender,
+      "reciever" : [to]
+    }, null,null);
+
+    console.log(email);
+
+    this.emailService.compose(email).subscribe(data => {
+      console.log(data);
+    });
     //we take id here
     // this.upload(id)
   }
@@ -88,7 +117,28 @@ export class CompositeComponent implements OnInit {
     this.files=[]
   }
   draft(){
+    let x = document.getElementById('to') as HTMLInputElement;
+    let y = document.getElementById('subject') as HTMLInputElement;
+    let a = document.querySelector('#pri') as HTMLInputElement;
+    let z = document.getElementById('message') as HTMLInputElement;
 
+    let to = this.composeform.value.to;
+    let subject = this.composeform.value.subject;
+    let priority = this.composeform.value.priority;
+    let message = this.composeform.value.reply;
+
+    let user = this.tokenStorageService.getUser();
+    let sender = user['email'];
+    let email = new Email(null,subject,message,priority,null,{
+      "sender" : sender,
+      "reciever" : [to]
+    }, null,null);
+
+    console.log(email);
+
+    this.emailService.saveToDraft(email).subscribe(data => {
+      console.log(data);
+    });
   }
 
 }

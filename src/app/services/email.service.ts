@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {Email} from "../email";
 
 
 const MAIL_API = 'http://localhost:8080/api/mail/';
+const USER_API = 'http://localhost:8080/api/user/';
 
 
 @Injectable({
@@ -159,4 +161,29 @@ export class EmailService {
       "mail_ids" : mailIds
     }).subscribe();
   }
+
+
+  public compose(email : Email){
+    return this.http.post(MAIL_API + "compose" , email);
+  }
+
+  public saveToDraft(email : Email){
+    return this.http.post(MAIL_API + "saveToDraft", email);
+  }
+
+  public getAllContacts(userId : string){
+    return this.http.put(USER_API + "getAllContacts" , {
+      "user_id" : userId
+    });
+  }
+
+  public searchInContacts(userId : string, col : string, key : string){
+    return this.http.put(USER_API + "searchInContacts" , {
+      "user_id" : userId,
+      "col" : col,
+      "key" : key
+    });
+  }
+
+
 }
