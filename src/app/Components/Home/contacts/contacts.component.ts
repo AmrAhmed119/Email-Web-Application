@@ -69,6 +69,11 @@ export class ContactsComponent implements OnInit {
 
   }
 
+  cancel() {
+    this.popAdd=false;
+    this.popDel=false;
+    this.popEdit=false;  
+  }
   sort() {
 
     /*
@@ -108,6 +113,8 @@ export class ContactsComponent implements OnInit {
 
   deleteContact() {
     this.popDel = true;
+    this.popAdd=false;
+    this.popEdit=false;
   }
 
   delete() {
@@ -131,6 +138,8 @@ export class ContactsComponent implements OnInit {
 
   addContact() {
     this.popAdd = true;
+    this.popDel=false;
+    this.popEdit=false;
   }
 
   add() {
@@ -160,6 +169,8 @@ export class ContactsComponent implements OnInit {
 
   editContact() {
     this.popEdit = true;
+    this.popAdd=false
+    this.popDel=false;
   }
 
   edit() {

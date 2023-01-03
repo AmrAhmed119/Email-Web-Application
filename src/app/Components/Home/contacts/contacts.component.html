@@ -13,41 +13,6 @@
     
     </div>
 
-    <div *ngIf="popAdd" class="pop">
-        <br><br>
-        <label style="margin-left: 4%;">Contact name: </label>
-        <input type="text" name="" id="contact-name">
-        <br><br>
-        <label style="margin-left: 4%;">Email: </label>
-        <input type="text" name="" id="email-name">
-        <br><br>
-        <button (click)="add()" style="margin-left: 25%; width: 20%;">Add</button>
-    </div>
-
-    <div *ngIf="popDel" class="popp">
-        <br><br>
-        <label style="margin-left: 4%;">contact number: </label>
-        <input type="text" name="" id="contact-number">
-        <br><br>
-        <button (click)="delete()" style="margin-left: 25%; width: 20%;">Delete</button>
-    </div>
-
-    <div *ngIf="popEdit" class="poppp">
-        <br><br>
-        <label style="margin-left: 4%;">Contact number: </label>
-        <input type="text" name="" id="contact-numberr">
-        <br><br>
-        <label style="margin-left: 4%;">Rename: </label>
-        <input type="text" name="" id="contact-rename">
-        <br><br>
-        <label style="margin-left: 4%;">Add Email: </label>
-        <input type="text" name="" id="contact-addEmail">
-        <br><br>
-        <label style="margin-left: 4%;">Remove Email: </label>
-        <input type="text" name="" id="contact-remove">
-        <br><br>
-        <button (click)="edit()" style="margin-left: 25%; width: 20%;">Edit</button>
-    </div>
 
     <div class="member-entry" *ngFor="let contact of contacts"> 
         <a class="member-img"> 
@@ -63,6 +28,26 @@
                 </div> 
             </div> 
         </div> 
+    </div>
+
+    <div *ngIf="popAdd" class="popScreen">
+        <input type="text" id="contact-name" class="form-control popup" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Enter Contact Name">
+        <input type="text" id="email-name" class="form-control popup" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Enter Email">
+        <button type="button" (click)="add()" class="btn btn-success btn-lg popup">Add</button>
+        <button type="button" (click)="cancel()" class="btn btn-danger btn-lg popup">Cancel</button>
+    </div>
+    <div *ngIf="popDel" class="popScreen">
+        <input type="text" id="contact-number" class="form-control popup" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Enter Contact Number">
+        <button type="button" (click)="delete()" class="btn btn-danger btn-lg popup">Delete</button>
+        <button type="button" (click)="cancel()" class="btn btn-warning btn-lg popup">Cancel</button>
+    </div>
+    <div *ngIf="popEdit" class="popScreen">
+        <input type="text" id="contact-numberr" class="form-control popup" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Enter Contact Number">
+        <input type="text" id="contact-rename"  class="form-control popup" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Enter contact new name">
+        <input type="text" id="contact-addEmail" class="form-control popup" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Add New Email">
+        <input type="text" id="contact-remove" class="form-control popup" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Number of Email to remove">
+        <button type="button" (click)="edit()" class="btn btn-success btn-lg popup">Edit</button>
+        <button type="button" (click)="cancel()" class="btn btn-danger btn-lg popup">Cancel</button>
     </div>
 
 </div>
