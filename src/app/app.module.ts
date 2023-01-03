@@ -16,6 +16,8 @@ import {CompositeComponent} from './Components/Home/composite/composite.componen
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AuthInterceptor} from "./services/auth-interceptor.service";
+import { FoldermailsComponent } from './Components/Home/folders/foldermails/foldermails.component';
+import { ContactsComponent } from './Components/Home/contacts/contacts.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import {AuthInterceptor} from "./services/auth-interceptor.service";
     FoldersComponent,
     CompositeComponent,
     MailComponent,
+    FoldermailsComponent,
+    ContactsComponent,
   ],
   imports: [
     BrowserModule,

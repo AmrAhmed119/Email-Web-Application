@@ -1,3 +1,4 @@
+import { FoldermailsComponent } from './Components/Home/folders/foldermails/foldermails.component';
 import { MailComponent } from './Components/Home/inbox/mail/mail.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -9,6 +10,7 @@ import { InboxComponent } from './Components/Home/inbox/inbox.component';
 import { SentComponent } from './Components/Home/sent/sent.component';
 import { TrashComponent } from './Components/Home/trash/trash.component';
 import { LoginComponent } from './Components/Login/login/login.component';
+import { ContactsComponent } from './Components/Home/contacts/contacts.component';
 
 const routes: Routes = [
   {path: "home", component:HomeComponent,children:[
@@ -21,7 +23,10 @@ const routes: Routes = [
     {path: "trash", component:TrashComponent},
     {path: "trash/:id", component:MailComponent},
     {path: "folder", component:FoldersComponent},
-    {path: "composite", component:CompositeComponent}
+    {path: "folder/:name",component:FoldermailsComponent},
+    {path: "folder/:name/:id",component:MailComponent},
+    {path: "composite", component:CompositeComponent},
+    {path: "contacts", component:ContactsComponent}
 
   ]},
   {path: "", component:LoginComponent}

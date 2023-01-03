@@ -21,6 +21,7 @@ export class MailComponent implements OnInit {
     this.emailid=this.activatedroute.snapshot.paramMap.get("id");
     this.email=this.mailservice.emails.find(x=> x.mail_id==this.emailid);
     this.emails=this.mailservice.emails;
+    console.log(this.emailid)
     // this.emails=this.emails.filter(x=> x.id!=this.emailid);
 
   }

@@ -7,7 +7,7 @@
 
 .leftScreen {
     margin: 0;
-    width: 15%;
+    width: 20%;
     height: 100%;
     background-color: rgb(255, 255, 255);
     border-right: 5px solid rgba(47, 48, 48, 0.347);;
@@ -76,7 +76,7 @@
     text-align: center;
     width: 100%;
     height: 10%;
-    margin-top: 20%;
+    margin-top: 10%;
     border: none;
     font-size: 29px;
     font-family: "Tahoma";
@@ -89,12 +89,12 @@
 }
 
 .option {
-    width:85%;
+    width:80%;
     height: 100%;
     overflow-y:scroll;
     margin: auto;
     position: absolute;
-    left: 15%;
+    left: 20%;
     border-radius: 1%;
     box-shadow:
     1px 0.7px 1.6px rgba(0, 0, 0, 0.003),

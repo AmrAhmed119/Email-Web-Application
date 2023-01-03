@@ -1,29 +1,6 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <div class="container bootdey">
 <div class="email-app">
-    <!-- <nav>
-        <a href="#" class="btn btn-danger btn-block">New Email</a>
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa fa-inbox"></i> Inbox <span class="badge badge-danger">4</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa fa-star"></i> Stared</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa fa-rocket"></i> Sent</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa fa-trash-o"></i> Trash</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa fa-bookmark"></i> Important</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#"><i class="fa fa-inbox"></i> Inbox <span class="badge badge-danger">4</span></a>
-            </li>
-        </ul>
-    </nav> -->
     <main>
         <p class="text-center">New Message</p>
         <form [formGroup]="composeform">
@@ -43,7 +20,7 @@
                 <label for="file-upload" class="custom-file-upload">
                     <i class="fa fa-paperclip mr-2"> Attach</i>
                 </label>
-                <input id="file-upload" type="file" (change)="selectFile($event)" />
+                <input id="file-upload" type="file" (change)="selectFile($event)" multiple/>
                 <label for="bcc" class="pri col-form-label">Priority:</label>
                 <select name="" id="pri" formControlName="priority">
                     <option value="1">1</option>
@@ -55,67 +32,6 @@
             </div>
         <div class="row">
             <div class="col-sm-11 ml-auto">
-                <!-- <div class="toolbar" role="toolbar">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light">
-                            <span class="fa fa-bold"></span>
-                        </button>
-                        <button type="button" class="btn btn-light">
-                            <span class="fa fa-italic"></span>
-                        </button>
-                        <button type="button" class="btn btn-light">
-                            <span class="fa fa-underline"></span>
-                        </button>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light">
-                            <span class="fa fa-align-left"></span>
-                        </button>
-                        <button type="button" class="btn btn-light">
-                            <span class="fa fa-align-right"></span>
-                        </button>
-                        <button type="button" class="btn btn-light">
-                            <span class="fa fa-align-center"></span>
-                        </button>
-                        <button type="button" class="btn btn-light">
-                            <span class="fa fa-align-justify"></span>
-                        </button>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light">
-                            <span class="fa fa-indent"></span>
-                        </button>
-                        <button type="button" class="btn btn-light">
-                            <span class="fa fa-outdent"></span>
-                        </button>
-                    </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light">
-                            <span class="fa fa-list-ul"></span>
-                        </button>
-                        <button type="button" class="btn btn-light">
-                            <span class="fa fa-list-ol"></span>
-                        </button>
-                    </div>
-                    <button type="button" class="btn btn-light">
-                        <span class="fa fa-trash-o"></span>
-                    </button>
-                    <button type="button" class="btn btn-light">
-                        <span class="fa fa-paperclip"></span>
-                    </button>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">
-                            <span class="fa fa-tags"></span>
-                            <span class="caret"></span>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">add label <span class="badge badge-danger"> Home</span></a>
-                            <a class="dropdown-item" href="#">add label <span class="badge badge-info"> Job</span></a>
-                            <a class="dropdown-item" href="#">add label <span class="badge badge-success"> Clients</span></a>
-                            <a class="dropdown-item" href="#">add label <span class="badge badge-warning"> News</span></a>
-                        </div>
-                    </div>
-                </div> -->
                 <div class="form-group mt-4">
                     <textarea class="form-control" id="message" name="body" rows="12" placeholder="Click here to reply" formControlName="reply"></textarea>
                     <div >

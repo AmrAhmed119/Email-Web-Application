@@ -33,7 +33,7 @@ export class CompositeComponent implements OnInit {
       this.emails=this.mailservice.emails;
       if(this.emailid===null){
         this.composeform=new FormGroup({
-          to:new FormControl("",Validators.email),
+          to:new FormControl("",[Validators.required,Validators.email]),
           subject:new FormControl(""),
           reply:new FormControl(""),
           priority:new FormControl("1")
@@ -54,8 +54,10 @@ export class CompositeComponent implements OnInit {
   selectFile(event: any): void {
     this.selectedFiles = event.target.files;
     if(this.selectedFiles){
-      this.currentFile=this.selectedFiles[0];
-      this.files.push(this.currentFile);
+      for(let i=0;i<this.selectedFiles.length;i++){
+        this.currentFile=this.selectedFiles[i];
+        this.files.push(this.currentFile);
+      }
     }
     console.log(this.files)
     console.log(this.currentFile)
