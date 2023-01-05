@@ -40,7 +40,7 @@ export class FoldermailsComponent implements OnInit {
 
     });
 
-    this.emailService.getCustomFolder(this.foldername,this.user['email'],this.index).subscribe(data=>{
+    this.emailService.getCustomFolder(this.foldername,this.user['email'],this.index.toString()).subscribe(data=>{
       this.setEmails(data);
     })
     // this.emails=this.mailService.emails.find(x=> x.mail_id==this.foldername);
@@ -68,14 +68,14 @@ export class FoldermailsComponent implements OnInit {
 
   newest() {
 
-    this.emailService.getInboxSortedBy(this.user["email"],"0","sended_at").subscribe( data => {
+    this.emailService.getCustomFolderSortedBy(this.foldername,this.user["email"],this.index.toString(),"sended_at").subscribe( data => {
       this.setEmails(data);
     })
   }
 
   priority() {
 
-    this.emailService.getInboxSortedBy(this.user["email"],"0","priority").subscribe( data => {
+    this.emailService.getCustomFolderSortedBy(this.foldername,this.user["email"],this.index.toString(),"priority").subscribe( data => {
       this.setEmails(data);
     })
 
@@ -83,7 +83,7 @@ export class FoldermailsComponent implements OnInit {
 
   pagPrev() {
     this.index = Math.max(0, this.index - 1)
-    this.emailService.getInbox(this.user["email"], this.index.toString()).subscribe(data => {
+    this.emailService.getCustomFolder(this.foldername,this.user["email"], this.index.toString()).subscribe(data => {
       this.setEmails(data)
     });
 
@@ -95,7 +95,7 @@ export class FoldermailsComponent implements OnInit {
     console.log(this.index);
     console.log("emails before");
     console.log(this.emails);
-    this.emailService.getInbox(this.user["email"], this.index.toString()).subscribe(data => {
+    this.emailService.getCustomFolder(this.foldername,this.user["email"],this.index.toString()).subscribe(data => {
       console.log("request return");
       console.log(data);
       this.setEmails(data);
@@ -198,7 +198,7 @@ export class FoldermailsComponent implements OnInit {
     let searchBy = element1.value;
     let searchText = element2.value;
 
-    this.emailService.searchInInbox(this.user["email"],searchBy,"0",searchText).subscribe( data => {
+    this.emailService.searchInFolder(this.user["email"],this.foldername,searchBy,this.index.toString(),searchText).subscribe( data => {
       this.setEmails(data)
     })
 
@@ -209,14 +209,14 @@ export class FoldermailsComponent implements OnInit {
     let element1 = document.querySelector('#by') as HTMLInputElement;
     let sortBy = element1.value;
 
-    this.emailService.getInboxSortedBy(this.user["email"],"0",sortBy).subscribe( data => {
+    this.emailService.getCustomFolderSortedBy(this.foldername,this.user["email"],this.index.toString(),sortBy).subscribe( data => {
       this.setEmails(data)
     })
 
   }
 
   public reloadEmails() {
-    this.emailService.getInbox(this.user["email"], "0").subscribe(data => {
+    this.emailService.getCustomFolder(this.foldername,this.user["email"], this.index.toString()).subscribe(data => {
       this.setEmails(data)
     });
   }

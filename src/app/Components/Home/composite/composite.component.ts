@@ -44,14 +44,17 @@ export class CompositeComponent implements OnInit {
           priority:new FormControl("1")
         });
       if(this.emailid!=null){
-        for(let rec of this.email.mail.receiver){
-          this.receivers.push(new FormControl(rec,[Validators.required,Validators.email]))
-        }
+
+
+        let ob = JSON.stringify(this.email)
+        let json = JSON.parse(ob);
+
+        console.log(json["recievers"]);
         this.composeform.setValue({
-          to:new FormArray(this.receivers),
-          subject:new FormControl(this.email?.subject),
-          reply:new FormControl(this.email?.message),
-          priority:new FormControl(this.email?.priority)
+          to: json["recievers"],
+          subject:this.email?.subject,
+          reply:this.email?.message,
+          priority:this.email?.priority
         });
         let mailId = String(this.emailid);
 
@@ -121,6 +124,8 @@ export class CompositeComponent implements OnInit {
 
   send(){
 
+
+
     let to = this.composeform.value.to;
     let subject = this.composeform.value.subject;
     let priority = this.composeform.value.priority;
@@ -144,6 +149,10 @@ export class CompositeComponent implements OnInit {
 
       this.hand(data);
     });
+
+    if (this.emailid != null){
+      this.emailService.eraseMails([this.emailid]);
+    }
 
     //we take id here
     // this.upload(id)
@@ -185,6 +194,10 @@ export class CompositeComponent implements OnInit {
     }, null,null);
 
     console.log(email);
+
+    if (this.emailid != null){
+      this.emailService.eraseMails([this.emailid]);
+    }
 
     this.emailService.saveToDraft(email).subscribe(data => {
       this.hand(data);
