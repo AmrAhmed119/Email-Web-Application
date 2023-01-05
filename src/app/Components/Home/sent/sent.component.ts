@@ -35,48 +35,42 @@ export class SentComponent implements OnInit {
 
     this.folderNames = this.user["custom_folders"];
     this.emailService.getSent(this.user["email"], "0").subscribe(data => {
-      let arr = data as Email[]
-      this.emails = arr;
+      this.setEmails(data);
     });
     this.mailService.emails = this.emails;
 
   }
 
-  newest() {
+  setEmails(data : any) {
+    let arr = data as Email[]
+    this.emails = arr;
+    this.mailService.emails = this.emails;
+  }
 
+  newest() {
     this.emailService.getSentSortedBy(this.user["email"],"0","sended_at").subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     })
   }
 
   priority() {
-
     this.emailService.getSentSortedBy(this.user["email"],"0","priority").subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     })
-
   }
 
   pagPrev() {
-
     this.index = Math.max(0, this.index - 1)
     this.emailService.getSent(this.user["email"], (this.index*12).toString()).subscribe(data => {
-      let arr = data as Email[]
-      this.emails = arr;
+      this.setEmails(data);
     });
-
   }
 
   pagNext() {
-
     this.index = Math.max(0, this.index + 1)
     this.emailService.getSent(this.user["email"], (this.index*12).toString()).subscribe(data => {
-      let arr = data as Email[]
-      this.emails = arr;
+      this.setEmails(data);
     });
-
   }
 
   addEmail(event: any) {
@@ -168,17 +162,14 @@ export class SentComponent implements OnInit {
   }
 
   search() {
-
     let element1 = document.querySelector('#by') as HTMLInputElement;
     let element2 = document.getElementById('search') as HTMLInputElement;
     let searchBy = element1.value;
     let searchText = element2.value;
 
     this.emailService.searchInSent(this.user["email"],searchBy,"0",searchText).subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     })
-
   }
 
   sort() {
@@ -187,16 +178,14 @@ export class SentComponent implements OnInit {
     let sortBy = element1.value;
 
     this.emailService.getSentSortedBy(this.user["email"],"0",sortBy).subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     })
 
   }
 
   public reloadEmails() {
     this.emailService.getSent(this.user["email"], "0").subscribe(data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     });
   }
 

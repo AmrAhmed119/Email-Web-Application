@@ -37,26 +37,27 @@ export class TrashComponent implements OnInit {
 
     this.folderNames = this.user["custom_folders"];
     this.emailService.getTrash(this.user["email"], "0").subscribe(data => {
-      let arr = data as Email[]
-      this.emails = arr;
+      this.setEmails(data);
     });
     this.mailService.emails = this.emails;
 
   }
 
-  newest() {
-
-    this.emailService.getTrashSortedBy(this.user["email"],"0","sended_at").subscribe( data => {
-      let arr = data as Email[];
+  setEmails(data:any){
+      let arr = data as Email[]
       this.emails = arr;
+  }
+
+  newest() {
+    this.emailService.getTrashSortedBy(this.user["email"],"0","sended_at").subscribe( data => {
+      this.setEmails(data);
     })
   }
 
   priority() {
 
     this.emailService.getTrashSortedBy(this.user["email"],"0","priority").subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     })
 
   }
@@ -65,8 +66,7 @@ export class TrashComponent implements OnInit {
 
     this.index = Math.max(0, this.index - 1)
     this.emailService.getTrash(this.user["email"], (this.index*12).toString()).subscribe(data => {
-      let arr = data as Email[]
-      this.emails = arr;
+      this.setEmails(data);
     });
 
   }
@@ -75,8 +75,7 @@ export class TrashComponent implements OnInit {
 
     this.index = Math.max(0, this.index + 1)
     this.emailService.getTrash(this.user["email"], (this.index*12).toString()).subscribe(data => {
-      let arr = data as Email[]
-      this.emails = arr;
+      this.setEmails(data);
     });
 
   }
@@ -151,7 +150,7 @@ export class TrashComponent implements OnInit {
     }
 
     console.log(arr);
-    this.emailService.deleteMails(arr);
+    this.emailService.eraseMails(arr);
     this.reloadEmails()
 
   }
@@ -177,8 +176,7 @@ export class TrashComponent implements OnInit {
     let searchText = element2.value;
 
     this.emailService.searchInTrash(this.user["email"],searchBy,"0",searchText).subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     })
 
   }
@@ -189,16 +187,14 @@ export class TrashComponent implements OnInit {
     let sortBy = element1.value;
 
     this.emailService.getTrashSortedBy(this.user["email"],"0",sortBy).subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     })
 
   }
 
   public reloadEmails() {
     this.emailService.getTrash(this.user["email"], "0").subscribe(data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     });
   }
 

@@ -34,47 +34,55 @@ export class InboxComponent implements OnInit{
     this.userDetails.client.email = userEmail;*/
 
     this.folderNames = this.user["custom_folders"];
-    this.emailService.getInbox(this.user["email"], "0").subscribe(data => {
-      let arr = data as Email[]
-      this.emails = arr;
+    this.emailService.getInbox(this.user["email"], "0").subscribe(data =>  {
+        this.setEmails(data)
     });
-    this.mailService.emails = this.emails;
+    this.mailService.emails=this.emails;
+  }
 
+  setEmails(data : any) {
+    let arr = data as Email[]
+    console.log("aaaa");
+    console.log(data);
+    this.emails = arr;
+    this.mailService.emails = this.emails;
   }
 
   newest() {
 
     this.emailService.getInboxSortedBy(this.user["email"],"0","sended_at").subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     })
   }
 
   priority() {
 
     this.emailService.getInboxSortedBy(this.user["email"],"0","priority").subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     })
 
   }
-
+  
   pagPrev() {
 
     this.index = Math.max(0, this.index - 1)
     this.emailService.getInbox(this.user["email"], (this.index*12).toString()).subscribe(data => {
-      let arr = data as Email[]
-      this.emails = arr;
+      this.setEmails(data)
     });
 
   }
 
   pagNext() {
 
-    this.index = Math.max(0, this.index + 1)
+    this.index = this.index + 1;
+    console.log("emails before")
+    console.log(this.emails);
     this.emailService.getInbox(this.user["email"], (this.index*12).toString()).subscribe(data => {
-      let arr = data as Email[]
-      this.emails = arr;
+      console.log("request return");
+      console.log(data);
+      this.setEmails(data);
+      console.log("afer");
+      console.log(this.emails);
     });
 
   }
@@ -147,10 +155,8 @@ export class InboxComponent implements OnInit{
     for(let i=0;i<this.selectedEmails.length;i++) {
       arr.push(this.selectedEmails[i].mail_id);
     }
-
-    console.log(arr);
     this.emailService.deleteMails(arr);
-    this.reloadEmails()
+    this.reloadEmails();
 
   }
 
@@ -175,8 +181,7 @@ export class InboxComponent implements OnInit{
     let searchText = element2.value;
 
     this.emailService.searchInInbox(this.user["email"],searchBy,"0",searchText).subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data)
     })
 
   }
@@ -187,16 +192,14 @@ export class InboxComponent implements OnInit{
     let sortBy = element1.value;
 
     this.emailService.getInboxSortedBy(this.user["email"],"0",sortBy).subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data)
     })
 
   }
 
   public reloadEmails() {
     this.emailService.getInbox(this.user["email"], "0").subscribe(data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data)
     });
   }
 

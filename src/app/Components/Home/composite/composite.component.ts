@@ -18,7 +18,7 @@ export class CompositeComponent implements OnInit {
   files:File[]=[]
   currentFile?: File;
 
-  fileInfos?: Observable<any>;
+  fileInfos:any[]=[];
   composeform!:FormGroup
   email ? :Email
   emailid? : string|null
@@ -53,6 +53,10 @@ export class CompositeComponent implements OnInit {
           priority:new FormControl(this.email?.priority)
         });
       }
+
+      this.fileservice.reset().subscribe(value=>{
+        console.log(value);
+      });
   }
 
 
@@ -65,11 +69,20 @@ export class CompositeComponent implements OnInit {
         this.files.push(this.currentFile);
       }
     }
-    console.log(this.files)
-    console.log(this.currentFile)
-    console.log(this.selectedFiles)
+    this.fileservice.generate(this.files).subscribe(value=>{
+      this.evaluate(value);
+    });
+  }
+  evaluate(value:any){
+    this.fileInfos=value.body;
+    console.log(this.files);
+    console.log(this.currentFile);
+    console.log(this.selectedFiles);
+    console.log(this.fileInfos);
     this.selectedFiles=undefined
   }
+
+
   upload(): void {
     if(this.files){
       this.fileservice.upload(this.files).subscribe(responsedata=>{
@@ -82,10 +95,10 @@ export class CompositeComponent implements OnInit {
 
   send(){
 
-    let x = document.getElementById('to') as HTMLInputElement;
-    let y = document.getElementById('subject') as HTMLInputElement;
-    let a = document.querySelector('#pri') as HTMLInputElement;
-    let z = document.getElementById('message') as HTMLInputElement;
+    // let x = document.getElementById('to') as HTMLInputElement;
+    // let y = document.getElementById('subject') as HTMLInputElement;
+    // let a = document.querySelector('#pri') as HTMLInputElement;
+    // let z = document.getElementById('message') as HTMLInputElement;
 
     let to = this.composeform.value.to;
     let subject = this.composeform.value.subject;
@@ -100,13 +113,21 @@ export class CompositeComponent implements OnInit {
     }, null,null);
 
     console.log(email);
-
+    
     this.emailService.compose(email).subscribe(data => {
-      console.log(data);
+      this.hand(data);
     });
     //we take id here
     // this.upload(id)
   }
+
+  hand(data:any){
+    console.log(data);
+    this.discard();
+  }
+
+
+  
   discard(){
     this.composeform.reset({
       to:'',
@@ -115,6 +136,11 @@ export class CompositeComponent implements OnInit {
       priority:'1'
     })
     this.files=[]
+    this.fileInfos=[]
+    this.fileservice.reset().subscribe(value=>{
+        console.log(value);
+    });
+    
   }
   draft(){
     let x = document.getElementById('to') as HTMLInputElement;
@@ -137,7 +163,7 @@ export class CompositeComponent implements OnInit {
     console.log(email);
 
     this.emailService.saveToDraft(email).subscribe(data => {
-      console.log(data);
+      this.hand(data);
     });
   }
 

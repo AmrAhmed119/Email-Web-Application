@@ -1,10 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Email} from "../email";
+import { User } from 'app/user';
 
 
-const MAIL_API = 'http://localhost:8080/api/mail/';
-const USER_API = 'http://localhost:8080/api/user/';
+const MAIL_API = 'http://localhost:9090/api/mail/';
+const USER_API = 'http://localhost:9090/api/user/';
 
 
 @Injectable({
@@ -142,7 +143,7 @@ export class EmailService {
     });
   }
 
-
+  
   public deleteMails(mailIds : string[]){
     return this.http.put(MAIL_API + "deleteMails", {
       "mail_ids" : mailIds
@@ -177,6 +178,13 @@ export class EmailService {
     });
   }
 
+  public getAllContactsSortedBy(userId : string, column : string){
+    return this.http.put(USER_API + "getAllContacts" , {
+      "user_id" : userId,
+      "column" : column
+    });
+  }
+
   public searchInContacts(userId : string, col : string, key : string){
     return this.http.put(USER_API + "searchInContacts" , {
       "user_id" : userId,
@@ -185,5 +193,42 @@ export class EmailService {
     });
   }
 
+  public addContact(name : string, emails : any, user_id : any) {
+    return this.http.post(USER_API + "addContact", {
+      "name": name,
+      "emails": emails,
+      "user": {
+          "user_id": user_id
+      }
+    });
+  }
+
+  public deleteContacts(user_id : string, contact_ids : any) {
+    return this.http.put(USER_API + "deleteContacts", {
+      "user_id": user_id,
+      "contact_ids": contact_ids
+    });
+  }
+
+  public updateContactName(contact_id : string, new_name : string) {
+    return this.http.put(USER_API + "updateContactName", {
+      "contact_id": contact_id,
+      "new_name": new_name
+    });
+  }
+
+  public addEmailToContact(contact_id : string, email : string) {
+    return this.http.post(USER_API + "addEmailToContact", {
+      "contact_id": contact_id,
+      "email": email
+    });
+  }
+
+  public deleteEmailsFromContact(contact_id : string, emails : any) {
+    return this.http.put(USER_API + "deleteEmailsFromContact", {
+      "contact_id": contact_id,
+      "emails": emails
+    });
+  }
 
 }

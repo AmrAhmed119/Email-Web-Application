@@ -17,7 +17,8 @@ export class DraftsComponent implements OnInit {
   selectedEmails: Email[] = [];
   folderNames: string[] = [];
   diselect: boolean = false;
-  index: any = 0
+  index: any = 0;
+  name : any;
 
   constructor(private mailService: MailService,
               private userDetails: UserDetailsService,
@@ -32,49 +33,46 @@ export class DraftsComponent implements OnInit {
     this.user = this.tokenStorageService.getUser();
     /*let userEmail = this.tokenStorageService.decodeToken()["email"]
     this.userDetails.client.email = userEmail;*/
+    console.log(this.user);
 
     this.folderNames = this.user["custom_folders"];
     this.emailService.getDraft(this.user["email"], "0").subscribe(data => {
-      let arr = data as Email[]
-      this.emails = arr;
+      this.setEmails(data);
     });
-    this.mailService.emails = this.emails;
 
+    this.mailService.emails = this.emails;
+  }
+
+  setEmails(data : any) {
+    let arr = data as Email[]
+    this.emails = arr;
+    this.mailService.emails = this.emails;
   }
 
   newest() {
-
     this.emailService.getDraftSortedBy(this.user["email"],"0","sended_at").subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     })
   }
 
   priority() {
-
     this.emailService.getDraftSortedBy(this.user["email"],"0","priority").subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     })
-
   }
 
   pagPrev() {
-
     this.index = Math.max(0, this.index - 1)
     this.emailService.getDraft(this.user["email"], (this.index*12).toString()).subscribe(data => {
-      let arr = data as Email[]
-      this.emails = arr;
+      this.setEmails(data);
     });
-
   }
 
   pagNext() {
 
     this.index = Math.max(0, this.index + 1)
     this.emailService.getDraft(this.user["email"], (this.index*12).toString()).subscribe(data => {
-      let arr = data as Email[]
-      this.emails = arr;
+      this.setEmails(data);
     });
 
   }
@@ -148,10 +146,9 @@ export class DraftsComponent implements OnInit {
       arr.push(this.selectedEmails[i].mail_id);
     }
 
-    console.log(arr);
     this.emailService.deleteMails(arr);
-    this.reloadEmails()
-
+    console.log(this.emails);
+    this.reloadEmails();
   }
 
   moveToFolder(event: any) {
@@ -163,8 +160,7 @@ export class DraftsComponent implements OnInit {
       arr.push(this.selectedEmails[i].mail_id);
     }
     this.emailService.moveToFolder(arr,name);
-    this.reloadEmails()
-
+    this.reloadEmails();
   }
 
   search() {
@@ -175,29 +171,26 @@ export class DraftsComponent implements OnInit {
     let searchText = element2.value;
 
     this.emailService.searchInDraft(this.user["email"],searchBy,"0",searchText).subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     })
 
   }
 
   sort() {
-
     let element1 = document.querySelector('#by') as HTMLInputElement;
     let sortBy = element1.value;
 
     this.emailService.getDraftSortedBy(this.user["email"],"0",sortBy).subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     })
-
   }
 
   public reloadEmails() {
-    this.emailService.getInbox(this.user["email"], "0").subscribe(data => {
-      let arr = data as Email[];
-      this.emails = arr;
+    this.emailService.getDraft(this.user["email"], "0").subscribe(data => {
+      console.log(data);
+      this.setEmails(data);
     });
+    // this.ngOnInit();
   }
 
 }

@@ -35,10 +35,10 @@
                 <div class="form-group mt-4">
                     <textarea class="form-control" id="message" name="body" rows="12" placeholder="Click here to reply" formControlName="reply"></textarea>
                     <div >
-                        <ng-container *ngFor="let file of files">
+                        <ng-container *ngFor="let file of  fileInfos">
                             <div class="file">
                                 <i style="display: inline-block;" class="fa fa-file"></i>
-                                {{file.name}}
+                                <a href="{{file.url}}">{{file.name}}</a>
                             </div>
                         </ng-container>
                     </div>

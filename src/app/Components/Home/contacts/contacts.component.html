@@ -37,15 +37,15 @@
         <button type="button" (click)="cancel()" class="btn btn-danger btn-lg popup">Cancel</button>
     </div>
     <div *ngIf="popDel" class="popScreen">
-        <input type="text" id="contact-number" class="form-control popup" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Enter Contact Number">
+        <input type="number" id="contact-number" class="form-control popup" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Enter Contact Number">
         <button type="button" (click)="delete()" class="btn btn-danger btn-lg popup">Delete</button>
         <button type="button" (click)="cancel()" class="btn btn-warning btn-lg popup">Cancel</button>
     </div>
     <div *ngIf="popEdit" class="popScreen">
-        <input type="text" id="contact-numberr" class="form-control popup" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Enter Contact Number">
+        <input type="number" id="contact-numberr" class="form-control popup" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Enter Contact Number">
         <input type="text" id="contact-rename"  class="form-control popup" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Enter contact new name">
         <input type="text" id="contact-addEmail" class="form-control popup" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Add New Email">
-        <input type="text" id="contact-remove" class="form-control popup" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Number of Email to remove">
+        <input type="number" id="contact-remove" class="form-control popup" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Number of Email to remove">
         <button type="button" (click)="edit()" class="btn btn-success btn-lg popup">Edit</button>
         <button type="button" (click)="cancel()" class="btn btn-danger btn-lg popup">Cancel</button>
     </div>
@@ -142,4 +142,4 @@
 
 <!-- </div> -->
 
-    <!-- --> -->
+    <!-- -->
