@@ -17,7 +17,7 @@ export class CompositeComponent implements OnInit {
   selectedFiles?: FileList;
   files:File[]=[]
   currentFile?: File;
-
+  receivers:FormControl[]=[]
   fileInfos:any[]=[];
   composeform!:FormGroup
   email ? :Email
@@ -37,33 +37,56 @@ export class CompositeComponent implements OnInit {
       this.emailid=this.activatedroute.snapshot.paramMap.get("id");
       this.email=this.mailservice.emails.find(x=> x.mail_id==this.emailid);
       this.emails=this.mailservice.emails;
-      if(this.emailid===null){
-        this.composeform=new FormGroup({
+      this.composeform=new FormGroup({
           to: new FormArray([new FormControl("",[Validators.required,Validators.email])]),
           subject:new FormControl(""),
           reply:new FormControl(""),
           priority:new FormControl("1")
         });
-      }
-      else{
-        this.composeform=new FormGroup({
-          to: new FormArray([new FormControl("",[Validators.required,Validators.email])]),
+      if(this.emailid!=null){
+        for(let rec of this.email.mail.receiver){
+          this.receivers.push(new FormControl(rec,[Validators.required,Validators.email]))
+        }
+        this.composeform.setValue({
+          to:new FormArray(this.receivers),
           subject:new FormControl(this.email?.subject),
           reply:new FormControl(this.email?.message),
           priority:new FormControl(this.email?.priority)
         });
-      }
+        let mailId = String(this.emailid);
 
-      this.fileservice.reset().subscribe(value=>{
-        console.log(value);
+        this.emailService.getFiles(mailId).subscribe(data => {
+          this.manage(data);
+        });
+      }
+      else{
+        this.fileservice.reset().subscribe(value=>{
+          console.log(value);
+        });
+      }
+  }
+
+
+
+  manage(data:any){
+    for (let i of data){
+      this.fileInfos.push({
+        name:i.name,
+        url:i.url
       });
+    }
+    console.log(this.files);
+    console.log(data);
   }
 
 
 
   addreciever(){
-    //this.composeform.get("to").push(new FormControl("",[Val]))
+    (<FormArray>this.composeform.get("to")).push(new FormControl("",[Validators.required,Validators.email]))
   }
+
+
+
   selectFile(event: any): void {
     this.selectedFiles = event.target.files;
     if(this.selectedFiles){
@@ -98,11 +121,6 @@ export class CompositeComponent implements OnInit {
 
   send(){
 
-    // let x = document.getElementById('to') as HTMLInputElement;
-    // let y = document.getElementById('subject') as HTMLInputElement;
-    // let a = document.querySelector('#pri') as HTMLInputElement;
-    // let z = document.getElementById('message') as HTMLInputElement;
-
     let to = this.composeform.value.to;
     let subject = this.composeform.value.subject;
     let priority = this.composeform.value.priority;
@@ -112,7 +130,7 @@ export class CompositeComponent implements OnInit {
     let sender = user['email'];
     let email = new Email(null,subject,message,priority,null,{
       "sender" : sender,
-      "reciever" : [to]
+      "reciever" : to
     }, null,null);
 
     console.log(email);
@@ -153,10 +171,6 @@ export class CompositeComponent implements OnInit {
 
   }
   draft(){
-    let x = document.getElementById('to') as HTMLInputElement;
-    let y = document.getElementById('subject') as HTMLInputElement;
-    let a = document.querySelector('#pri') as HTMLInputElement;
-    let z = document.getElementById('message') as HTMLInputElement;
 
     let to = this.composeform.value.to;
     let subject = this.composeform.value.subject;
@@ -167,7 +181,7 @@ export class CompositeComponent implements OnInit {
     let sender = user['email'];
     let email = new Email(null,subject,message,priority,null,{
       "sender" : sender,
-      "reciever" : [to]
+      "reciever" : to
     }, null,null);
 
     console.log(email);

@@ -7,6 +7,7 @@ import { Email } from '../email';
 export class MailService {
 
   emails : Email[] = [];
+  receivers:any[]=[];
 
   constructor() {
     // let msg : string = "Hello Mohamed, How are you now!, we are having alot of assignments and i can't handle it so help me if you can help me i need it please to ";

@@ -53,7 +53,7 @@ export class DraftsComponent implements OnInit {
   }
 
   setEmails(data : any) {
-    let arr = data as Email[]
+    let arr = data as Email[];
     this.emails = arr;
     this.mailService.emails = this.emails;
   }
