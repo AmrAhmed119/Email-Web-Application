@@ -34,9 +34,6 @@ export class TrashComponent implements OnInit {
     this.diselect = false;
 
     this.user = this.tokenStorageService.getUser();
-    /*let userEmail = this.tokenStorageService.decodeToken()["email"]
-    this.userDetails.client.email = userEmail;*/
-
     this.folderNames = this.user["custom_folders"];
 
     this.emailService.getFolderSize(this.user["email"], "Trash").subscribe(data => {
@@ -46,6 +43,7 @@ export class TrashComponent implements OnInit {
     this.emailService.getTrash(this.user["email"], "0").subscribe(data => {
       this.setEmails(data);
     });
+
     this.mailService.emails = this.emails;
 
   }
@@ -87,7 +85,7 @@ export class TrashComponent implements OnInit {
 
   pagNext() {
 
-    this.index = Math.max(0, this.index + 1)
+    this.index = Math.min(this.size - 1, this.index + 1);
     this.emailService.getTrash(this.user["email"], this.index.toString()).subscribe(data => {
       this.setEmails(data);
     });
@@ -165,7 +163,7 @@ export class TrashComponent implements OnInit {
 
     console.log(arr);
     this.emailService.eraseMails(arr);
-    this.reloadEmails()
+    window.location.reload()
 
   }
 
@@ -178,7 +176,7 @@ export class TrashComponent implements OnInit {
       arr.push(this.selectedEmails[i].mail_id);
     }
     this.emailService.moveToFolder(arr,name);
-    this.reloadEmails()
+    window.location.reload()
 
   }
 
@@ -213,12 +211,8 @@ export class TrashComponent implements OnInit {
     }
 
     this.emailService.restoreMails(arr);
-  }
+    window.location.reload()
 
-  public reloadEmails() {
-    this.emailService.getTrash(this.user["email"], "0").subscribe(data => {
-      this.setEmails(data);
-    });
   }
 
   public formatDate(date : any){

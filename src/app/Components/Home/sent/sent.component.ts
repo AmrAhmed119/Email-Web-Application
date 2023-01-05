@@ -18,11 +18,7 @@ export class SentComponent implements OnInit {
   folderNames: string[] = [];
   diselect: boolean = false;
   index: any = 0;
-
-  this.emailService.getFolderSize(this.user["email"], "Inbox").subscribe(data => {
-  this.setSize(data);
-  });
-
+  size: number = 0;
 
   constructor(private mailService: MailService,
               private userDetails: UserDetailsService,
@@ -35,9 +31,6 @@ export class SentComponent implements OnInit {
     this.diselect = false;
 
     this.user = this.tokenStorageService.getUser();
-    /*let userEmail = this.tokenStorageService.decodeToken()["email"]
-    this.userDetails.client.email = userEmail;*/
-
     this.folderNames = this.user["custom_folders"];
 
     this.emailService.getFolderSize(this.user["email"], "Inbox").subscribe(data => {
@@ -47,6 +40,7 @@ export class SentComponent implements OnInit {
     this.emailService.getSent(this.user["email"], "0").subscribe(data => {
       this.setEmails(data);
     });
+
     this.mailService.emails = this.emails;
 
   }
@@ -57,7 +51,6 @@ export class SentComponent implements OnInit {
     this.size = Math.ceil(ob / 12);
     console.log(this.size);
   }
-
 
   setEmails(data : any) {
     let arr = data as Email[]
@@ -85,7 +78,7 @@ export class SentComponent implements OnInit {
   }
 
   pagNext() {
-    this.index = Math.max(0, this.index + 1)
+    this.index = Math.min(this.size - 1, this.index + 1);
     this.emailService.getSent(this.user["email"], (this.index*12).toString()).subscribe(data => {
       this.setEmails(data);
     });
@@ -160,9 +153,8 @@ export class SentComponent implements OnInit {
       arr.push(this.selectedEmails[i].mail_id);
     }
 
-    console.log(arr);
     this.emailService.deleteMails(arr);
-    this.reloadEmails()
+    window.location.reload();
 
   }
 
@@ -175,7 +167,7 @@ export class SentComponent implements OnInit {
       arr.push(this.selectedEmails[i].mail_id);
     }
     this.emailService.moveToFolder(arr,name);
-    this.reloadEmails()
+    window.location.reload();
 
   }
 

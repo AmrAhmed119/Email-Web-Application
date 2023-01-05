@@ -18,7 +18,6 @@ export class DraftsComponent implements OnInit {
   folderNames: string[] = [];
   diselect: boolean = false;
   index: any = 0;
-  name : any;
   size: number = 0;
 
 
@@ -33,10 +32,6 @@ export class DraftsComponent implements OnInit {
     this.diselect = false;
 
     this.user = this.tokenStorageService.getUser();
-    /*let userEmail = this.tokenStorageService.decodeToken()["email"]
-    this.userDetails.client.email = userEmail;*/
-    console.log(this.user);
-
     this.folderNames = this.user["custom_folders"];
 
     this.emailService.getFolderSize(this.user["email"], "Draft").subscribe(data => {
@@ -84,7 +79,7 @@ export class DraftsComponent implements OnInit {
 
   pagNext() {
 
-    this.index = Math.max(0, this.index + 1)
+    this.index = Math.min(this.size - 1, this.index + 1);
     this.emailService.getDraft(this.user["email"], this.index.toString()).subscribe(data => {
       this.setEmails(data);
     });
@@ -161,8 +156,8 @@ export class DraftsComponent implements OnInit {
     }
 
     this.emailService.deleteMails(arr);
-    console.log(this.emails);
-    this.reloadEmails();
+    window.location.reload()
+
   }
 
   moveToFolder(event: any) {
@@ -174,7 +169,8 @@ export class DraftsComponent implements OnInit {
       arr.push(this.selectedEmails[i].mail_id);
     }
     this.emailService.moveToFolder(arr,name);
-    this.reloadEmails();
+    window.location.reload()
+
   }
 
   search() {
@@ -197,14 +193,6 @@ export class DraftsComponent implements OnInit {
     this.emailService.getDraftSortedBy(this.user["email"],"0",sortBy).subscribe( data => {
       this.setEmails(data);
     })
-  }
-
-  public reloadEmails() {
-    this.emailService.getDraft(this.user["email"], "0").subscribe(data => {
-      console.log(data);
-      this.setEmails(data);
-    });
-    // this.ngOnInit();
   }
 
   public formatDate(date : any){

@@ -34,15 +34,11 @@ export class InboxComponent implements OnInit {
     this.diselect = false;
 
     this.user = this.tokenStorageService.getUser();
+    this.folderNames = this.user["custom_folders"];
+
     this.userRequestService.getUser(this.user["email"]).subscribe(user => {
       this.tokenStorageService.saveUser(user);
     });
-    this.user = this.tokenStorageService.getUser();
-
-    /*let userEmail = this.tokenStorageService.decodeToken()["email"]
-    this.userDetails.client.email = userEmail;*/
-
-    this.folderNames = this.user["custom_folders"];
 
     this.emailService.getFolderSize(this.user["email"], "Inbox").subscribe(data => {
       this.setSize(data);
@@ -78,9 +74,8 @@ export class InboxComponent implements OnInit {
 
 
       console.log(this.emails);*/
-
-
     });
+
     this.mailService.emails = this.emails;
   }
 
@@ -100,14 +95,12 @@ export class InboxComponent implements OnInit {
   }
 
   newest() {
-
     this.emailService.getInboxSortedBy(this.user["email"], "0", "sended_at").subscribe(data => {
       this.setEmails(data);
     })
   }
 
   priority() {
-
     this.emailService.getInboxSortedBy(this.user["email"], "0", "priority").subscribe(data => {
       this.setEmails(data);
     })
@@ -119,23 +112,13 @@ export class InboxComponent implements OnInit {
     this.emailService.getInbox(this.user["email"], this.index.toString()).subscribe(data => {
       this.setEmails(data)
     });
-
   }
 
   pagNext(){
     this.index = Math.min(this.size - 1, this.index + 1);
-    console.log(this.size);
-    console.log(this.index);
-    console.log("emails before");
-    console.log(this.emails);
     this.emailService.getInbox(this.user["email"], this.index.toString()).subscribe(data => {
-      console.log("request return");
-      console.log(data);
       this.setEmails(data);
-      console.log("afer");
-      console.log(this.emails);
     });
-
   }
 
   addEmail(event: any) {
@@ -209,8 +192,6 @@ export class InboxComponent implements OnInit {
     this.emailService.deleteMails(arr);
     window.location.reload()
 
-    // this.reloadEmails();
-
   }
 
   moveToFolder(event: any) {
@@ -222,8 +203,7 @@ export class InboxComponent implements OnInit {
       arr.push(this.selectedEmails[i].mail_id);
     }
     this.emailService.moveToFolder(arr, name);
-    window.location.reload()
-    this.reloadEmails()
+    window.location.reload();
 
   }
 
@@ -249,12 +229,6 @@ export class InboxComponent implements OnInit {
       this.setEmails(data)
     })
 
-  }
-
-  public reloadEmails() {
-    this.emailService.getInbox(this.user["email"], "0").subscribe(data => {
-      this.setEmails(data)
-    });
   }
 
   public formatDate(date: any) {
