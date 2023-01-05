@@ -4,8 +4,9 @@ import {Email} from "../email";
 import { User } from 'app/user';
 
 
-const MAIL_API = 'http://localhost:9090/api/mail/';
-const USER_API = 'http://localhost:9090/api/user/';
+const MAIL_API = 'http://localhost:8080/api/mail/';
+const USER_API = 'http://localhost:8080/api/user/';
+const File_API = 'http://localhost:8080/api/file/'
 
 
 @Injectable({
@@ -15,6 +16,17 @@ export class EmailService {
 
   constructor(private http: HttpClient) {}
 
+  public getFiles(mailId : string){
+    return this.http.put(File_API + "getFiles" , {
+      "mail_id" : mailId
+    });
+  }
+
+  public uploadFile(files: File[], mailDetailsId : string){
+    return this.http.post(File_API + "upload", {
+      "mail_details_id" : mailDetailsId
+    });
+  }
 
   public getInbox(userEmail: string, index: string) {
     return this.http.post(MAIL_API + "inbox", {
@@ -94,6 +106,13 @@ export class EmailService {
     });
   }
 
+  public getFolderSize(userEmail : string, folderName : string){
+    return this.http.put(MAIL_API + "getFolderSize",{
+      "user_email" : userEmail,
+      "folder_name" : folderName
+    })
+  }
+
 
   public searchInInbox(userEmail : string, column : string,index : string,key : string){
     return this.http.post(MAIL_API + "searchInInbox" , {
@@ -143,7 +162,7 @@ export class EmailService {
     });
   }
 
-  
+
   public deleteMails(mailIds : string[]){
     return this.http.put(MAIL_API + "deleteMails", {
       "mail_ids" : mailIds
@@ -171,6 +190,14 @@ export class EmailService {
   public saveToDraft(email : Email){
     return this.http.post(MAIL_API + "saveToDraft", email);
   }
+
+
+  public restoreMails(mailIds : any){
+    return this.http.put(MAIL_API + "restoreMails", {
+      "mail_ids" : mailIds
+    }).subscribe();
+  }
+
 
   public getAllContacts(userId : string){
     return this.http.put(USER_API + "getAllContacts" , {
@@ -228,6 +255,34 @@ export class EmailService {
     return this.http.put(USER_API + "deleteEmailsFromContact", {
       "contact_id": contact_id,
       "emails": emails
+    });
+  }
+
+  public addFolder(userEmail : string, folderName : string){
+    this.http.post(USER_API + "addFolder" , {
+      "user_email" : userEmail,
+      "folder_name" : folderName
+    }).subscribe()
+  }
+
+  public renameFolder(userEmail : string , oldFolderName : string, newFolderName : string){
+    this.http.put(USER_API + "renameFolder" , {
+      "user_email" : userEmail,
+      "oldfolder_name" : oldFolderName,
+      "newfolder_name" : newFolderName
+    }).subscribe()
+  }
+
+  public deleteFolders(userEmail : string , foldersNames : any){
+    this.http.put(USER_API + "deleteFolders" , {
+      "user_email" : userEmail,
+      "folders_names" : foldersNames
+    }).subscribe()
+  }
+
+  public getAllFolders(userEmail : string){
+    return this.http.put(USER_API + "getAllFolders" , {
+      "user_email"  : userEmail
     });
   }
 

@@ -4,25 +4,29 @@ import {Email} from 'app/email';
 import {UserDetailsService} from "../../../services/user-details.service";
 import {EmailService} from "../../../services/email.service";
 import {TokenStorageService} from "../../../services/token-storage.service";
+import {UserRequestService} from "../../../services/user-request.service";
 
 @Component({
   selector: 'app-inbox',
   templateUrl: './inbox.component.html',
   styleUrls: ['./inbox.component.css']
 })
-export class InboxComponent implements OnInit{
+export class InboxComponent implements OnInit {
 
-  user : any;
+  user: any;
   emails: Email[] = [];
   selectedEmails: Email[] = [];
   folderNames: string[] = [];
   diselect: boolean = false;
   index: any = 0
+  size: number = 0;
 
   constructor(private mailService: MailService,
               private userDetails: UserDetailsService,
               private emailService: EmailService,
-              private tokenStorageService : TokenStorageService) {}
+              private userRequestService: UserRequestService,
+              private tokenStorageService: TokenStorageService) {
+  }
 
   ngOnInit(): void {
 
@@ -30,17 +34,64 @@ export class InboxComponent implements OnInit{
     this.diselect = false;
 
     this.user = this.tokenStorageService.getUser();
+    this.userRequestService.getUser(this.user["email"]).subscribe(user => {
+      this.tokenStorageService.saveUser(user);
+    });
+    this.user = this.tokenStorageService.getUser();
+
     /*let userEmail = this.tokenStorageService.decodeToken()["email"]
     this.userDetails.client.email = userEmail;*/
 
     this.folderNames = this.user["custom_folders"];
-    this.emailService.getInbox(this.user["email"], "0").subscribe(data =>  {
-        this.setEmails(data)
+
+    this.emailService.getFolderSize(this.user["email"], "Inbox").subscribe(data => {
+      this.setSize(data);
     });
-    this.mailService.emails=this.emails;
+
+    this.emailService.getInbox(this.user["email"], "0").subscribe(data => {
+      this.setEmails(data)
+
+      /*for (let email of this.emails){
+
+        let tempEmail : Email = email;
+
+        let recievers = tempEmail['recievers'];
+        let newRecievers = []
+
+        for (let reciever of recievers){
+
+          let name = "";
+          this.userRequestService.getUserName(reciever).subscribe(data => {
+            let json = JSON.stringify(data);
+            name = JSON.parse(json);
+          });
+
+
+          newRecievers.push({
+            "name" : name,
+            "email" : reciever
+          });
+        }
+
+        email.mail['reciever'] = newRecievers;
+      }
+
+
+      console.log(this.emails);*/
+
+
+    });
+    this.mailService.emails = this.emails;
   }
 
-  setEmails(data : any) {
+  setSize(data : any) {
+    let json = JSON.stringify(data);
+    let ob = JSON.parse(json);
+    this.size = Math.ceil(ob / 12);
+    console.log(this.size);
+  }
+
+  setEmails(data: any) {
     let arr = data as Email[]
     console.log("aaaa");
     console.log(data);
@@ -50,34 +101,34 @@ export class InboxComponent implements OnInit{
 
   newest() {
 
-    this.emailService.getInboxSortedBy(this.user["email"],"0","sended_at").subscribe( data => {
+    this.emailService.getInboxSortedBy(this.user["email"], "0", "sended_at").subscribe(data => {
       this.setEmails(data);
     })
   }
 
   priority() {
 
-    this.emailService.getInboxSortedBy(this.user["email"],"0","priority").subscribe( data => {
+    this.emailService.getInboxSortedBy(this.user["email"], "0", "priority").subscribe(data => {
       this.setEmails(data);
     })
 
   }
-  
-  pagPrev() {
 
+  pagPrev() {
     this.index = Math.max(0, this.index - 1)
-    this.emailService.getInbox(this.user["email"], (this.index*12).toString()).subscribe(data => {
+    this.emailService.getInbox(this.user["email"], this.index.toString()).subscribe(data => {
       this.setEmails(data)
     });
 
   }
 
-  pagNext() {
-
-    this.index = this.index + 1;
-    console.log("emails before")
+  pagNext(){
+    this.index = Math.min(this.size - 1, this.index + 1);
+    console.log(this.size);
+    console.log(this.index);
+    console.log("emails before");
     console.log(this.emails);
-    this.emailService.getInbox(this.user["email"], (this.index*12).toString()).subscribe(data => {
+    this.emailService.getInbox(this.user["email"], this.index.toString()).subscribe(data => {
       console.log("request return");
       console.log(data);
       this.setEmails(data);
@@ -152,11 +203,13 @@ export class InboxComponent implements OnInit{
   delete() {
 
     let arr = [];
-    for(let i=0;i<this.selectedEmails.length;i++) {
+    for (let i = 0; i < this.selectedEmails.length; i++) {
       arr.push(this.selectedEmails[i].mail_id);
     }
     this.emailService.deleteMails(arr);
-    this.reloadEmails();
+    window.location.reload()
+
+    // this.reloadEmails();
 
   }
 
@@ -165,10 +218,11 @@ export class InboxComponent implements OnInit{
     let btn = event.target as HTMLButtonElement;
     let name = btn.innerHTML;
     let arr = [];
-    for(let i=0;i<this.selectedEmails.length;i++) {
+    for (let i = 0; i < this.selectedEmails.length; i++) {
       arr.push(this.selectedEmails[i].mail_id);
     }
-    this.emailService.moveToFolder(arr,name);
+    this.emailService.moveToFolder(arr, name);
+    window.location.reload()
     this.reloadEmails()
 
   }
@@ -180,7 +234,7 @@ export class InboxComponent implements OnInit{
     let searchBy = element1.value;
     let searchText = element2.value;
 
-    this.emailService.searchInInbox(this.user["email"],searchBy,"0",searchText).subscribe( data => {
+    this.emailService.searchInInbox(this.user["email"], searchBy, "0", searchText).subscribe(data => {
       this.setEmails(data)
     })
 
@@ -191,7 +245,7 @@ export class InboxComponent implements OnInit{
     let element1 = document.querySelector('#by') as HTMLInputElement;
     let sortBy = element1.value;
 
-    this.emailService.getInboxSortedBy(this.user["email"],"0",sortBy).subscribe( data => {
+    this.emailService.getInboxSortedBy(this.user["email"], "0", sortBy).subscribe(data => {
       this.setEmails(data)
     })
 
@@ -203,4 +257,7 @@ export class InboxComponent implements OnInit{
     });
   }
 
+  public formatDate(date: any) {
+    return new Date(date * 1000).toUTCString();
+  }
 }

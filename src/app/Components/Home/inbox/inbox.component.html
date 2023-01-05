@@ -6,7 +6,9 @@
     <div class="dropdown">
         <span>Move to</span>
         <div class="dropdown-content">
-            <button (click)="moveToFolder($event)" class="folder" *ngFor="let folderName of folderNames">{{folderName}}</button>
+          <ng-container *ngFor="let folderName of folderNames">
+            <button (click)="moveToFolder($event)" class="folder">{{folderName}}</button>
+          </ng-container>
         </div>
     </div>
     <input type="text" class="operation-search" placeholder="Search.." id="search">
@@ -40,7 +42,7 @@
             <button class="email-box" routerLink="{{email.mail_id}}" name="{{email.mail_id}}">
                 <div class="email-name">Amr Ahmed</div>
                 <div class="email-msg">{{email.message}}</div>
-                <div class="email-date">{{email.sended_at}}</div>
+                <div class="email-date">{{formatDate(email.sended_at)}}</div>
             </button>
         </div>
 

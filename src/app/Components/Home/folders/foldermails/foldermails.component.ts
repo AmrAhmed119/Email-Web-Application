@@ -1,10 +1,10 @@
 import {Component, DoCheck, OnInit} from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import {Email} from 'app/email';
-import { EmailService } from 'app/services/email.service';
-import { MailService } from 'app/services/mail.service';
-import { TokenStorageService } from 'app/services/token-storage.service';
-import { UserDetailsService } from 'app/services/user-details.service';
+import {MailService} from "../../../../services/mail.service";
+import {UserDetailsService} from "../../../../services/user-details.service";
+import {EmailService} from "../../../../services/email.service";
+import {TokenStorageService} from "../../../../services/token-storage.service";
+import {Email} from "../../../../email";
+import {ActivatedRoute} from "@angular/router";
 @Component({
   selector: 'app-foldermails',
   templateUrl: './foldermails.component.html',
@@ -16,7 +16,8 @@ export class FoldermailsComponent implements OnInit {
   selectedEmails: Email[] = [];
   folderNames: string[] = [];
   diselect: boolean = false;
-  index: any = 0
+  index: any = 0;
+  size : number = 0;
   foldername:any;
 
   constructor(private mailService: MailService,
@@ -30,7 +31,18 @@ export class FoldermailsComponent implements OnInit {
     this.selectedEmails = []
     this.diselect = false;
     this.foldername=this.activatedroute.snapshot.paramMap.get("name");
-    console.log(this.foldername);
+    this.user = this.tokenStorageService.getUser();
+    this.emailService.getFolderSize(this.user["email"],this.foldername).subscribe(data => {
+      let json = JSON.stringify(data);
+      let ob = JSON.parse(json);
+      this.size = Math.ceil(ob / 12);
+      console.log(this.size);
+
+    });
+
+    this.emailService.getCustomFolder(this.foldername,this.user['email'],this.index).subscribe(data=>{
+      this.setEmails(data);
+    })
     // this.emails=this.mailService.emails.find(x=> x.mail_id==this.foldername);
     // this.emails=this.mailservice.emails;
     // this.user = this.tokenStorageService.getUser();
@@ -46,39 +58,49 @@ export class FoldermailsComponent implements OnInit {
 
   }
 
+  setEmails(data : any) {
+    let arr = data as Email[]
+    console.log("aaaa");
+    console.log(data);
+    this.emails = arr;
+    this.mailService.emails = this.emails;
+  }
+
   newest() {
 
     this.emailService.getInboxSortedBy(this.user["email"],"0","sended_at").subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     })
   }
 
   priority() {
 
     this.emailService.getInboxSortedBy(this.user["email"],"0","priority").subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data);
     })
 
   }
 
   pagPrev() {
-
     this.index = Math.max(0, this.index - 1)
-    this.emailService.getInbox(this.user["email"], (this.index*12).toString()).subscribe(data => {
-      let arr = data as Email[]
-      this.emails = arr;
+    this.emailService.getInbox(this.user["email"], this.index.toString()).subscribe(data => {
+      this.setEmails(data)
     });
 
   }
 
   pagNext() {
-
-    this.index = Math.max(0, this.index + 1)
-    this.emailService.getInbox(this.user["email"], (this.index*12).toString()).subscribe(data => {
-      let arr = data as Email[]
-      this.emails = arr;
+    this.index = Math.min(this.size-1, this.index + 1);
+    console.log(this.size);
+    console.log(this.index);
+    console.log("emails before");
+    console.log(this.emails);
+    this.emailService.getInbox(this.user["email"], this.index.toString()).subscribe(data => {
+      console.log("request return");
+      console.log(data);
+      this.setEmails(data);
+      console.log("afer");
+      console.log(this.emails);
     });
 
   }
@@ -151,10 +173,8 @@ export class FoldermailsComponent implements OnInit {
     for(let i=0;i<this.selectedEmails.length;i++) {
       arr.push(this.selectedEmails[i].mail_id);
     }
-
-    console.log(arr);
     this.emailService.deleteMails(arr);
-    this.reloadEmails()
+    this.reloadEmails();
 
   }
 
@@ -179,8 +199,7 @@ export class FoldermailsComponent implements OnInit {
     let searchText = element2.value;
 
     this.emailService.searchInInbox(this.user["email"],searchBy,"0",searchText).subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data)
     })
 
   }
@@ -191,17 +210,18 @@ export class FoldermailsComponent implements OnInit {
     let sortBy = element1.value;
 
     this.emailService.getInboxSortedBy(this.user["email"],"0",sortBy).subscribe( data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data)
     })
 
   }
 
   public reloadEmails() {
     this.emailService.getInbox(this.user["email"], "0").subscribe(data => {
-      let arr = data as Email[];
-      this.emails = arr;
+      this.setEmails(data)
     });
   }
 
+  public formatDate(date : any){
+    return new Date(date * 1000).toUTCString();
+  }
 }

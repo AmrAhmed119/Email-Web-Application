@@ -1,6 +1,6 @@
 import { FileService } from './../../../services/file.service';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {FormArray, FormControl, FormGroup, Validators} from '@angular/forms';
 import { MailService } from 'app/services/mail.service';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
@@ -39,7 +39,7 @@ export class CompositeComponent implements OnInit {
       this.emails=this.mailservice.emails;
       if(this.emailid===null){
         this.composeform=new FormGroup({
-          to:new FormControl("",[Validators.required,Validators.email]),
+          to: new FormArray([new FormControl("",[Validators.required,Validators.email])]),
           subject:new FormControl(""),
           reply:new FormControl(""),
           priority:new FormControl("1")
@@ -47,7 +47,7 @@ export class CompositeComponent implements OnInit {
       }
       else{
         this.composeform=new FormGroup({
-          to:new FormControl(this.email?.mail,Validators.email),
+          to: new FormArray([new FormControl("",[Validators.required,Validators.email])]),
           subject:new FormControl(this.email?.subject),
           reply:new FormControl(this.email?.message),
           priority:new FormControl(this.email?.priority)
@@ -61,6 +61,9 @@ export class CompositeComponent implements OnInit {
 
 
 
+  addreciever(){
+    //this.composeform.get("to").push(new FormControl("",[Val]))
+  }
   selectFile(event: any): void {
     this.selectedFiles = event.target.files;
     if(this.selectedFiles){
@@ -83,9 +86,9 @@ export class CompositeComponent implements OnInit {
   }
 
 
-  upload(): void {
-    if(this.files){
-      this.fileservice.upload(this.files).subscribe(responsedata=>{
+  upload(mailDetailsId : string): void {
+    if(this.files.length!=0){
+      this.fileservice.upload(this.files,mailDetailsId).subscribe(responsedata=>{
         console.log(responsedata);
       });
       // this.fileInfos=this.service.getFiles();
@@ -113,10 +116,17 @@ export class CompositeComponent implements OnInit {
     }, null,null);
 
     console.log(email);
-    
+
+    let mailId = "";
+
     this.emailService.compose(email).subscribe(data => {
+      let json = JSON.stringify(data);
+      mailId = JSON.parse(json)['mail_details_id'];
+      this.upload(mailId);
+
       this.hand(data);
     });
+
     //we take id here
     // this.upload(id)
   }
@@ -127,7 +137,7 @@ export class CompositeComponent implements OnInit {
   }
 
 
-  
+
   discard(){
     this.composeform.reset({
       to:'',
@@ -140,7 +150,7 @@ export class CompositeComponent implements OnInit {
     this.fileservice.reset().subscribe(value=>{
         console.log(value);
     });
-    
+
   }
   draft(){
     let x = document.getElementById('to') as HTMLInputElement;

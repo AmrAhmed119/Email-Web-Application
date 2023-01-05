@@ -17,7 +17,12 @@ export class SentComponent implements OnInit {
   selectedEmails: Email[] = [];
   folderNames: string[] = [];
   diselect: boolean = false;
-  index: any = 0
+  index: any = 0;
+
+  this.emailService.getFolderSize(this.user["email"], "Inbox").subscribe(data => {
+  this.setSize(data);
+  });
+
 
   constructor(private mailService: MailService,
               private userDetails: UserDetailsService,
@@ -34,12 +39,25 @@ export class SentComponent implements OnInit {
     this.userDetails.client.email = userEmail;*/
 
     this.folderNames = this.user["custom_folders"];
+
+    this.emailService.getFolderSize(this.user["email"], "Inbox").subscribe(data => {
+      this.setSize(data);
+    });
+
     this.emailService.getSent(this.user["email"], "0").subscribe(data => {
       this.setEmails(data);
     });
     this.mailService.emails = this.emails;
 
   }
+
+  setSize(data : any) {
+    let json = JSON.stringify(data);
+    let ob = JSON.parse(json);
+    this.size = Math.ceil(ob / 12);
+    console.log(this.size);
+  }
+
 
   setEmails(data : any) {
     let arr = data as Email[]
@@ -187,6 +205,10 @@ export class SentComponent implements OnInit {
     this.emailService.getSent(this.user["email"], "0").subscribe(data => {
       this.setEmails(data);
     });
+  }
+
+  public formatDate(date : any){
+    return new Date(date * 1000).toUTCString();
   }
 
 }

@@ -16,12 +16,9 @@ export class LoginComponent implements OnInit {
   signupform!: FormGroup;
   signinform!: FormGroup;
 
-  currentUser: any;
   isSuccessful = false;
   isSignUpFailed = false;
 
-  isLoggedIn = false;
-  isLoginFailed = false;
   roles: string[] = [];
 
 
@@ -91,9 +88,6 @@ export class LoginComponent implements OnInit {
       data => {
         console.log(data);
         this.tokenStorageService.saveToken(data.access_token);
-        this.isLoginFailed = false;
-        this.isLoggedIn = true;
-
         this.tokenStorageService.decodeToken();
         //this.roles = this.tokenStorageService.decodeToken()["authority"];
 
@@ -108,8 +102,6 @@ export class LoginComponent implements OnInit {
         //this.route.navigate(['/home']);
       },
       err => {
-        this.errorMessage = err.error.message;
-        this.isLoginFailed = true;
         alert("There is no account by such credentials");
       }
     );
@@ -146,18 +138,26 @@ export class LoginComponent implements OnInit {
       password: password
     }
 
-    this.authService.register(userData).subscribe(() => {
-        this.isSuccessful = true;
-        this.isSignUpFailed = false;
+    this.authService.checkEmailTaken(email).subscribe( () => {
+      this.authService.register(userData).subscribe(() => {
+          this.isSuccessful = true;
+          this.isSignUpFailed = false;
 
-        const container = document.getElementById('container');
+          const container = document.getElementById('container');
           container?.classList.add("right-panel-active");
           container?.classList.remove("right-panel-active");
 
           //this.route.navigate(['/home']).then(() => {});
           //this.reloadPage();
-      }
-    );
+        }
+      ,() => {
+          alert("Invalid domain");
+        });
+    }, err => {
+      alert("Email Already Taken");
+    });
+
+
     /*
     SEND REQUEST WITH THE USERNAME AND PASSWORD AND VALIDATE THE ACCOUNT
     RETYRN YES OR NO.

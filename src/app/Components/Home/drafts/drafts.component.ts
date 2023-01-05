@@ -19,6 +19,8 @@ export class DraftsComponent implements OnInit {
   diselect: boolean = false;
   index: any = 0;
   name : any;
+  size: number = 0;
+
 
   constructor(private mailService: MailService,
               private userDetails: UserDetailsService,
@@ -36,11 +38,23 @@ export class DraftsComponent implements OnInit {
     console.log(this.user);
 
     this.folderNames = this.user["custom_folders"];
+
+    this.emailService.getFolderSize(this.user["email"], "Draft").subscribe(data => {
+      this.setSize(data);
+    });
+
     this.emailService.getDraft(this.user["email"], "0").subscribe(data => {
       this.setEmails(data);
     });
 
     this.mailService.emails = this.emails;
+  }
+
+  setSize(data : any) {
+    let json = JSON.stringify(data);
+    let ob = JSON.parse(json);
+    this.size = Math.ceil(ob / 12);
+    console.log(this.size);
   }
 
   setEmails(data : any) {
@@ -63,7 +77,7 @@ export class DraftsComponent implements OnInit {
 
   pagPrev() {
     this.index = Math.max(0, this.index - 1)
-    this.emailService.getDraft(this.user["email"], (this.index*12).toString()).subscribe(data => {
+    this.emailService.getDraft(this.user["email"], this.index.toString()).subscribe(data => {
       this.setEmails(data);
     });
   }
@@ -71,7 +85,7 @@ export class DraftsComponent implements OnInit {
   pagNext() {
 
     this.index = Math.max(0, this.index + 1)
-    this.emailService.getDraft(this.user["email"], (this.index*12).toString()).subscribe(data => {
+    this.emailService.getDraft(this.user["email"], this.index.toString()).subscribe(data => {
       this.setEmails(data);
     });
 
@@ -191,6 +205,10 @@ export class DraftsComponent implements OnInit {
       this.setEmails(data);
     });
     // this.ngOnInit();
+  }
+
+  public formatDate(date : any){
+    return new Date(date * 1000).toUTCString();
   }
 
 }

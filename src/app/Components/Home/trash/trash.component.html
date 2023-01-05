@@ -3,12 +3,13 @@
   <button (click)="selectAll()" title="Select all" class="operation-btn"><i class='far fa-calendar-check'></i></button>
   <button (click)="delete()" title="Delete" class="operation-btn"><i class='far fa-trash-alt'></i></button>
   <button (click)="sort()" title="Sort" class="operation-btn"><i class='fas fa-sort-amount-down'></i></button>
-  <div class="dropdown">
-    <span>Move to</span>
-    <div class="dropdown-content">
-      <button (click)="moveToFolder($event)" class="folder" *ngFor="let folderName of folderNames">{{folderName}}</button>
-    </div>
-  </div>
+  <button (click)="restore()" title="Restore" class="operation-btn"><i class='fas fa-trash-restore'></i></button>
+<!--  <div class="dropdown">-->
+<!--    <span>Move to</span>-->
+<!--    <div class="dropdown-content">-->
+<!--      <button (click)="moveToFolder($event)" class="folder" *ngFor="let folderName of folderNames">{{folderName}}</button>-->
+<!--    </div>-->
+<!--  </div>-->
   <input type="text" class="operation-search" placeholder="Search.." id="search">
   <button (click)="search()" class="search-button" title="Search"><i class="fa fa-search"></i></button>
   <select class="selection" id="by">
@@ -40,7 +41,7 @@
       <button class="email-box" routerLink="{{email.mail_id}}" name="{{email.mail_id}}">
         <div class="email-name">Amr Ahmed</div>
         <div class="email-msg">{{email.message}}</div>
-        <div class="email-date">{{email.sended_at}}</div>
+        <div class="email-date">{{formatDate(email.sended_at)}}</div>
       </button>
     </div>
 

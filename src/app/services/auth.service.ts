@@ -3,7 +3,8 @@ import {HttpHeaders, HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 
 
-const AUTH_API = 'http://localhost:9090/api/auth/';
+const AUTH_API = 'http://localhost:8080/api/auth/';
+const VALIDATION_API  = 'http://localhost:8080/api/validation'
 
 
 @Injectable({
@@ -29,4 +30,9 @@ export class AuthService {
     });
   }
 
+  public checkEmailTaken(email : string){
+    return this.http.post(VALIDATION_API + '/validate' , {
+      "email" : email
+    });
+  }
 }

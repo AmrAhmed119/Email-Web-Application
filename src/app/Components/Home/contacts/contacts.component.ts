@@ -106,7 +106,7 @@ export class ContactsComponent implements OnInit {
       this.contacts = response
       */
 
-      this.emailService.searchInContacts(user['user_id'],'name',searchText).subscribe(data => {
+      this.emailService.searchInContacts(user['user_id'],'emails',searchText).subscribe(data => {
         console.log(data)
         let json = JSON.stringify(data);
         let ob = JSON.parse(json);

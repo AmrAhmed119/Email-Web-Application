@@ -18,7 +18,9 @@ export class TrashComponent implements OnInit {
   selectedEmails: Email[] = [];
   folderNames: string[] = [];
   diselect: boolean = false;
-  index: any = 0
+  index: any = 0;
+  size: number = 0;
+
 
   constructor(private mailService: MailService,
               private userDetails: UserDetailsService,
@@ -36,11 +38,23 @@ export class TrashComponent implements OnInit {
     this.userDetails.client.email = userEmail;*/
 
     this.folderNames = this.user["custom_folders"];
+
+    this.emailService.getFolderSize(this.user["email"], "Trash").subscribe(data => {
+      this.setSize(data);
+    });
+
     this.emailService.getTrash(this.user["email"], "0").subscribe(data => {
       this.setEmails(data);
     });
     this.mailService.emails = this.emails;
 
+  }
+
+  setSize(data : any) {
+    let json = JSON.stringify(data);
+    let ob = JSON.parse(json);
+    this.size = Math.ceil(ob / 12);
+    console.log(this.size);
   }
 
   setEmails(data:any){
@@ -65,7 +79,7 @@ export class TrashComponent implements OnInit {
   pagPrev() {
 
     this.index = Math.max(0, this.index - 1)
-    this.emailService.getTrash(this.user["email"], (this.index*12).toString()).subscribe(data => {
+    this.emailService.getTrash(this.user["email"], this.index.toString()).subscribe(data => {
       this.setEmails(data);
     });
 
@@ -74,7 +88,7 @@ export class TrashComponent implements OnInit {
   pagNext() {
 
     this.index = Math.max(0, this.index + 1)
-    this.emailService.getTrash(this.user["email"], (this.index*12).toString()).subscribe(data => {
+    this.emailService.getTrash(this.user["email"], this.index.toString()).subscribe(data => {
       this.setEmails(data);
     });
 
@@ -192,10 +206,23 @@ export class TrashComponent implements OnInit {
 
   }
 
+  restore() {
+    let arr = [];
+    for(let i=0;i<this.selectedEmails.length;i++) {
+      arr.push(this.selectedEmails[i].mail_id);
+    }
+
+    this.emailService.restoreMails(arr);
+  }
+
   public reloadEmails() {
     this.emailService.getTrash(this.user["email"], "0").subscribe(data => {
       this.setEmails(data);
     });
+  }
+
+  public formatDate(date : any){
+    return new Date(date * 1000).toUTCString();
   }
 
 }
